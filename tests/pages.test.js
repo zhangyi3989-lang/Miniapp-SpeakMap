@@ -68,7 +68,7 @@ test("全部页面可在模拟微信运行时加载，初始空状态无崩溃",
     const name = route.split("/")[1];
     assert.doesNotThrow(() => mount(name));
   }
-  assert.equal(mount("home").data.stats.answers, 0);
+  assert.equal(mount("home").data.plan.steps[0].title, "新母句 A01");
   assert.equal(mount("bank").data.items.length, 0);
   assert.equal(mount("profile").data.records.length, 0);
 });
