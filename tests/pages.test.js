@@ -174,6 +174,12 @@ test("复习页参考隐藏、退出恢复，保存换场景、自评后同步",
     d.reviews[0].nextReviewAt = "2020-01-01T00:00:00.000Z";
   });
   const page = mount("review");
+  assert.equal(page.data.categories.length, 3);
+  assert.equal(page.data.items.length, 0);
+  page.selectBank({
+    currentTarget: { dataset: { type: storage.load().reviews[0].bankType } },
+  });
+  assert.equal(page.data.items.length > 0, true);
   page.open({ currentTarget: { dataset: { id: page.data.items[0].id } } });
   assert.equal(page.data.session.revealed, false);
   page.input({ detail: { value: "Recall before seeing reference" } });

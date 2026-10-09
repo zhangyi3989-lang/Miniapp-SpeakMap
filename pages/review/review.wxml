@@ -1,22 +1,22 @@
 <view class="page"><brand-header section="复习"/>
   <block wx:if="{{!session}}">
     <view class="eyebrow">RETRIEVAL FIRST</view>
-    <view class="title"><text class="marker">先想起来，</text><view><text class="marker">再继续往下说。</text></view></view>
-    <view class="muted">到期 {{dueCount}} 项。只记录练习行为和你的自评。</view>
-    <button class="primary" bindtap="continue">继续任务 / 开始到期复习</button>
-    <view wx:if="{{!dueCount}}" class="card green"><brand-mascot caption="今天没有到期复习。" compact="{{true}}"/></view>
-    <view wx:for="{{items}}" wx:key="id" class="card" bindtap="open" data-id="{{item.id}}">
-      <view class="row">
-        <view class="badge">R{{item.stage+1}}</view>
-        <view class="muted">{{item.isDue ? '到期，开始 →' : item.date + ' 到期'}}</view>
-      </view>
-      <view class="subtitle">{{item.kind === 'mother' ? item.label : '学习库条目（参考在回忆后显示）'}}</view>
+    <view class="title"><text class="marker">学习库复习</text></view>
+    <view class="muted">选择一个学习库，先回忆，再看参考、换场景表达。母句学习与复习由首页统一安排。</view>
+    <view wx:for="{{categories}}" wx:key="type" class="card {{selectedType === item.type ? 'green' : ''}}" data-type="{{item.type}}" bindtap="selectBank">
+      <view class="subtitle">{{item.name}} →</view>
+      <view class="muted">{{item.description}}</view>
+      <view class="badge">今日待复习 {{item.due}} 条</view>
+      <view class="small muted">已积累 {{item.total}} 条</view>
     </view>
-    <view wx:if="{{!items.length}}" class="empty">完成首次训练或加入学习库后，会安排复习。</view>
-    <view wx:if="{{practiceMothers.length}}" class="subtitle">换场景练习</view>
-    <button wx:for="{{practiceMothers}}" wx:key="id" data-id="{{item.id}}" bindtap="practice">
-      {{item.id}} · 写一个新的生活场景
-    </button>
+    <block wx:if="{{selectedType}}">
+      <view class="subtitle">所选学习库的复习安排</view>
+      <view wx:for="{{items}}" wx:key="id" class="card" bindtap="open" data-id="{{item.id}}">
+        <view class="row"><view class="badge">R{{item.stage+1}}</view><view class="muted">{{item.isDue ? '到期，开始 →' : item.date + ' 到期'}}</view></view>
+        <view class="subtitle">学习库条目（参考在回忆后显示）</view>
+      </view>
+      <view wx:if="{{!items.length}}" class="empty">暂无待安排的条目。加入这个学习库后，会自动安排复习。</view>
+    </block>
   </block>
   <block wx:else>
     <view class="badge">R{{stage+1}} / R5 · {{task.name}}</view>

@@ -8,6 +8,7 @@ const validation = require("../../utils/validation");
 const config = require("../../config/trainingConfig");
 Page({
   data: {
+    selectedType: "",
     session: null,
     max: config.inputMaxLength,
     input: "",
@@ -48,8 +49,36 @@ Page({
         due = reviews.dueItems();
       this.setData({
         session: null,
+        categories: [
+          {
+            type: "mistake",
+            name: "错误库复习",
+            description: "练习自己容易说错的表达。",
+          },
+          {
+            type: "natural_upgrade",
+            name: "地道升级库复习",
+            description: "把原来的说法换成更自然的表达。",
+          },
+          {
+            type: "expression",
+            name: "Chunk库复习",
+            description: "在新场景中调用积累的词块。",
+          },
+        ].map((c) =>
+          Object.assign({}, c, {
+            total: d.banks[c.type].length,
+            due: due.filter((r) => r.kind === "bank" && r.bankType === c.type)
+              .length,
+          }),
+        ),
         items: d.reviews
-          .filter((r) => !r.completed)
+          .filter(
+            (r) =>
+              !r.completed &&
+              r.kind === "bank" &&
+              r.bankType === this.data.selectedType,
+          )
           .sort(
             (a, b) => Date.parse(a.nextReviewAt) - Date.parse(b.nextReviewAt),
           )
@@ -71,6 +100,10 @@ Page({
         ),
       });
     });
+  },
+  selectBank(e) {
+    this.setData({ selectedType: e.currentTarget.dataset.type });
+    this.refresh();
   },
   open(e) {
     ui.guard(() => {
