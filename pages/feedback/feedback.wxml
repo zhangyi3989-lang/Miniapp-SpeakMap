@@ -16,7 +16,7 @@
       <view class="muted">{{item.why}}</view>
     </view>
   </view>
-  <button wx:if="{{feedback &amp;&amp; !session.completed}}" class="primary" bindtap="finish" disabled="{{busy}}">
+  <button wx:if="{{feedback && !session.completed}}" class="primary" bindtap="finish" disabled="{{busy}}">
     完成本次练习，选择候选
   </button>
   <button wx:if="{{session.completed}}" class="primary" bindtap="candidates">选择学习库候选</button>

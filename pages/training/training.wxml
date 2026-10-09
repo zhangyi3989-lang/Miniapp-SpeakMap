@@ -30,7 +30,7 @@
           wx:key="label"
           class="node {{item.active ? 'active' : ''}} {{item.done ? 'done' : ''}}"
         >
-          {{item.label}}{{index &lt; task.map.length-1 ? ' →' : ''}}
+          {{item.label}}{{index + 1 === task.map.length ? '' : ' →'}}
         </view>
       </view>
       <view class="card">
@@ -39,7 +39,7 @@
         <view wx:if="{{task.en}}" class="muted">{{task.en}}</view>
         <view wx:if="{{task.hint}}" class="tag">思路：{{task.hint}}</view>
         <view wx:if="{{task.action}}" class="muted">{{task.action}}</view>
-        <button wx:if="{{task.helpers.length &amp;&amp; !feedback}}" bindtap="helpers">
+        <button wx:if="{{task.helpers.length && !feedback}}" bindtap="helpers">
           {{helperOpen ? '收起表达帮助' : '需要表达帮助'}}
         </button>
         <view wx:if="{{helperOpen}}">

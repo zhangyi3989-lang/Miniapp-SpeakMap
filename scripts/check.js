@@ -99,10 +99,9 @@ for (const m of mothers) {
 for (const file of files.filter((f) => f.endsWith(".wxml"))) {
   const template = fs.readFileSync(file, "utf8");
   for (const match of template.matchAll(/\{\{([\s\S]*?)\}\}/g)) {
-    const expression = match[1]
-      .replace(/&amp;/g, "&")
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">");
+    const expression = match[1];
+    check(!/&(?:amp|lt|gt|quot|apos);/.test(expression),
+      "WXML 插值中不能用 HTML 实体替代运算符 " + file);
     try {
       new Function("return (" + expression + ")");
       checks++;
@@ -136,7 +135,7 @@ for (const file of files.filter((f) => f.endsWith(".wxml"))) {
   }
   check(!stack.length, "WXML 未闭合 " + file);
   check(
-    !/&(?!(?:amp|lt|gt|quot|apos);)/.test(source),
+    !/&(?!(?:amp|lt|gt|quot|apos);)/.test(source.replace(/\{\{[\s\S]*?\}\}/g, "")),
     "WXML 实体未转义 " + file,
   );
 }
