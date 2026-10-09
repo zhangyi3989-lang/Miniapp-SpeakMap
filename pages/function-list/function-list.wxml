@@ -1,0 +1,11 @@
+<view class="page">
+  <brand-header section="功能表达"/>
+  <view class="title"><text class="marker">12个功能表达</text></view>
+  <view class="muted">从切入话题到补充、解释和收尾，让表达自然连起来。</view>
+  <view wx:for="{{items}}" wx:key="id" class="card">
+    <view class="badge">{{item.id}}</view>
+    <view class="subtitle">{{item.name}}</view>
+    <view class="muted">什么时候用：{{item.action}}</view>
+    <view wx:for="{{item.expressions}}" wx:for-item="expression" wx:key="*this" class="line english">{{expression}}</view>
+  </view>
+</view>

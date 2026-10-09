@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "12个功能表达",
+  "usingComponents": {
+    "brand-header": "/components/brand-header/brand-header"
+  }
+}

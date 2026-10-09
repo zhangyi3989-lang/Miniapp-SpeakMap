@@ -43,15 +43,15 @@
   <view class="grid">
     <view class="entry-card blue" bindtap="mothers">
       <view class="mini-icon blue-icon">句</view>
-      <view class="subtitle">母句训练 ↗</view>
+      <view class="subtitle">34个母句 ↗</view>
       <view class="muted">从理解到自己说出来</view>
-      <view class="small muted">3 个可训练示例母句</view>
+      <view class="small muted">已收录3个 · 其余待补充</view>
     </view>
-    <view class="entry-card pink" bindtap="free">
+    <view class="entry-card pink" bindtap="functions">
       <view class="mini-icon pink-icon">…</view>
-      <view class="subtitle">自由表达 ↗</view>
-      <view class="muted">从一个真实话题开始</view>
-      <view class="small muted">用自己的观点回答</view>
+      <view class="subtitle">12个功能表达 ↗</view>
+      <view class="muted">把一句话自然接成一段</view>
+      <view class="small muted">查看用途与表达示例</view>
     </view>
   </view>
   <view class="footnote">学习数据仅保存在当前设备</view>

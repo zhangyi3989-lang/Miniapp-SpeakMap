@@ -13,7 +13,8 @@
     "pages/review/review",
     "pages/profile/profile",
     "pages/backup/backup",
-    "pages/record/record"
+    "pages/record/record",
+    "pages/function-list/function-list"
   ],
   "window": {
     "navigationBarTitleText": "SpeakMap",

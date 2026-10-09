@@ -11,7 +11,7 @@ Page({
   mothers() {
     wx.navigateTo({ url: "/pages/mother-list/mother-list" });
   },
-  free() {
-    wx.navigateTo({ url: "/pages/free-expression/free-expression" });
+  functions() {
+    wx.navigateTo({ url: "/pages/function-list/function-list" });
   },
 });
