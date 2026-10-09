@@ -1,23 +1,21 @@
-<view class="page home-page">
-  <brand-header section="首页"/>
-  <view class="home-welcome"><view class="grow"><view class="welcome-title">今天，继续向前</view><view class="muted">每一次学习都是靠近更好的你</view></view><brand-mascot compact="{{true}}"/></view>
+<view class="page home-page" style="padding-top: {{statusBarHeight}}px;">
+  <image class="home-scene" src="/assets/home-scene.jpg" mode="aspectFill"/>
+  <view class="home-header"><view class="home-logo">❧ SpeakMap <text>❧</text></view><view class="home-tagline">用英语，打开更大的世界</view></view>
+  <view class="home-welcome"><view class="welcome-title">今天，继续向前</view><view class="welcome-line">每一次学习都是靠近更好的你</view></view>
   <view class="card current-card">
-    <view class="badge">当前学习</view>
-    <view class="current-title">{{current.title}}</view>
-    <view class="muted">{{current.detail}}</view>
-    <button class="primary" bindtap="start">开始今天的学习 →</button>
+    <view class="current-main"><view class="current-copy"><view class="badge">当前学习</view><view class="current-title">{{current.title}}</view><view class="muted current-description">{{current.detail}}</view></view><image class="reading-cat" src="/assets/home-reading-cat.png" mode="aspectFit"/></view>
+    <button class="primary" bindtap="start">开始今天的学习 <text class="button-arrow">→</text></button>
   </view>
   <view class="card route-card">
-    <view class="row"><view class="subtitle">接下来的学习</view><view class="small muted">按进度安排</view></view>
-    <view wx:for="{{upcomingSteps}}" wx:key="id" class="route-step"><view class="route-number {{item.kind}}">{{index+2}}</view><view class="grow"><view class="plan-title">{{item.title}}</view><view class="muted small">{{item.detail}}</view></view></view>
-    <view wx:if="{{!upcomingSteps.length}}" class="muted small">暂无后续任务，完成当前练习后会重新检查安排。</view>
-    <view wx:if="{{plan.upcoming.length}}" class="label">之后到期</view>
-    <view wx:for="{{plan.upcoming}}" wx:key="id" class="line"><view>{{item.title}}</view><view class="muted small">{{item.detail}}</view></view>
-    <view class="small muted route-note">不用今天全部完成，下次从停下的位置继续。</view>
+    <view class="row route-heading"><view class="subtitle">接下来的学习</view><view class="plan-toggle" bindtap="togglePlan">{{expanded ? '收起' : '查看全部'}} ›</view></view>
+    <view wx:for="{{expanded ? upcomingSteps : previewSteps}}" wx:key="id" class="route-step"><view class="route-number {{item.kind}}">{{index+2}}</view><view class="grow"><view class="plan-title">{{item.title}}</view><view class="muted small route-description">{{item.detail}}</view></view><view wx:if="{{index === 0}}" class="next-label">下一步 ›</view></view>
+    <view wx:if="{{!upcomingSteps.length}}" class="muted small">完成当前练习后，会重新检查学习安排。</view>
+    <block wx:if="{{expanded}}"><view wx:if="{{plan.upcoming.length}}" class="label">之后到期</view><view wx:for="{{plan.upcoming}}" wx:key="id" class="line"><view>{{item.title}}</view><view class="muted small">{{item.detail}}</view></view><view class="small muted route-note">不用今天全部完成，下次从停下的位置继续。</view></block>
+    <view wx:if="{{!expanded && pendingCount > previewSteps.length}}" class="small muted more-note">还有 {{pendingCount-previewSteps.length}} 项安排，查看全部了解。</view>
   </view>
   <view class="grid content-entries">
-    <view class="entry-card resource-mothers" bindtap="mothers"><view class="resource-icon">句</view><view class="subtitle">34个母句 →</view><view class="small muted">核心介绍与详细学习</view></view>
-    <view class="entry-card resource-functions" bindtap="functions"><view class="resource-icon">···</view><view class="subtitle">12个功能表达 →</view><view class="small muted">把一句自然接成一段</view></view>
+    <view class="entry-card resource-mothers" bindtap="mothers"><view class="resource-icon book-icon"><view/><view/></view><view class="grow"><view class="subtitle">34个母句</view><view class="small muted">打好表达基础</view></view><text class="entry-arrow">›</text></view>
+    <view class="entry-card resource-functions" bindtap="functions"><view class="resource-icon bubble-icon">···</view><view class="grow"><view class="subtitle">12个功能表达</view><view class="small muted">应对真实场景</view></view><text class="entry-arrow">›</text></view>
   </view>
   <view wx:if="{{demo}}" class="demo small">当前为示例模式 · 暂用文字作答，语音尚未接入。反馈用于演示流程。</view>
   <view class="footnote">学习数据仅保存在当前设备</view>

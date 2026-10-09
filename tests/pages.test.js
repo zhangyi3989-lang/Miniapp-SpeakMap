@@ -309,3 +309,29 @@ test("正式资料34个编号顺序正确，功能表达包含主动与辅助分
   const home = mount("home");
   assert.equal(home.data.current.title, home.data.plan.steps[0].title);
 });
+
+test("C首页默认三条紧凑安排，展开不丢失未来复习或改变进度", () => {
+  const s = training.create("training", "A01");
+  storage.transact((d) => {
+    for (const [i, id] of ["A01", "E02", "E03", "A02"].entries())
+      d.reviews.push({
+        id: "future-ui-" + i,
+        kind: "mother",
+        sourceId: id,
+        stage: 0,
+        nextReviewAt: "2099-01-01T00:00:00.000Z",
+        history: [],
+        completed: false,
+      });
+  });
+  const before = JSON.stringify(storage.load()),
+    home = mount("home");
+  assert.ok(home.data.previewSteps.length <= 3);
+  assert.equal(home.data.pendingCount, home.data.upcomingSteps.length + 4);
+  assert.equal(home.data.expanded, false);
+  home.togglePlan();
+  assert.equal(home.data.expanded, true);
+  assert.equal(home.data.plan.upcoming.length, 4);
+  assert.equal(JSON.stringify(storage.load()), before);
+  assert.equal(home.data.current.id, "session:" + s.sessionId);
+});

@@ -3,5 +3,6 @@
   "usingComponents": {
     "brand-header": "/components/brand-header/brand-header",
     "brand-mascot": "/components/brand-mascot/brand-mascot"
-  }
+  },
+  "navigationStyle": "custom"
 }
