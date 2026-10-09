@@ -27,7 +27,7 @@ global.wx = {
 };
 const storage = require("../services/storage"),
   training = require("../services/trainingService"),
-  ai = require("../services/ai"),
+  ai = require("../services/ai/index"),
   bank = require("../services/bankService");
 function navigate(method, url) {
   const tabs = require("../app.json").tabBar.list.map((t) => "/" + t.pagePath);

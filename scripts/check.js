@@ -27,10 +27,9 @@ for (const file of files) {
     for (const m of text.matchAll(/require\(['"](\.[^'"]+)['"]\)/g)) {
       const p = path.resolve(path.dirname(file), m[1]);
       check(
-        fs.existsSync(p) ||
-          fs.existsSync(p + ".js") ||
-          fs.existsSync(path.join(p, "index.js")),
-        `模块不存在 ${file}: ${m[1]}`,
+        (fs.existsSync(p) && fs.statSync(p).isFile()) ||
+          fs.existsSync(p + ".js"),
+        `模块文件不存在（微信不自动查找目录 index.js） ${file}: ${m[1]}`,
       );
     }
     if (!file.includes("/tests/") && !file.includes("/scripts/"))

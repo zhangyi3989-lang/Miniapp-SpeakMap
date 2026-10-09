@@ -1,6 +1,6 @@
 const training = require("../../services/trainingService");
 const mothers = require("../../data/motherSentences");
-const ai = require("../../services/ai");
+const ai = require("../../services/ai/index");
 const ui = require("../../utils/page");
 const config = require("../../config/trainingConfig");
 Page({
