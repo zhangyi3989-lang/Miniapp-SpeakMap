@@ -1,1 +1,14 @@
-/* 全局样式来自 app.wxss。 */
+.plan-step {
+  display: flex;
+  gap: 20rpx;
+  align-items: flex-start;
+  padding: 24rpx 0;
+  border-bottom: 2rpx solid #dce8ed;
+}
+.plan-title {
+  font-weight: 700;
+  margin-bottom: 8rpx;
+}
+.plan-note {
+  margin-top: 24rpx;
+}

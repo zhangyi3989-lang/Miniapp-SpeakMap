@@ -560,3 +560,51 @@ test("L6 两个话题：30 秒到 60 秒保留原段，新话题无提示且上�
   assert.equal(training.get(s.sessionId).draft, "My expanded full paragraph.");
   assert.match(training.task(training.get(s.sessionId)).progressLabel, /60 秒/);
 });
+
+test("首页路径预览只读，顺序为断点、到期轮次、新母句；未到期单独显示", () => {
+  const s = training.create("training", "A01", {
+    phase: "training",
+    level: "L5",
+  });
+  storage.transact((d) => {
+    d.reviews.push(
+      {
+        id: "plan-r1",
+        kind: "mother",
+        sourceId: "E02",
+        stage: 0,
+        nextReviewAt: "2020-01-01T00:00:00.000Z",
+        history: [],
+        completed: false,
+      },
+      {
+        id: "plan-r2",
+        kind: "mother",
+        sourceId: "E03",
+        stage: 1,
+        nextReviewAt: "2021-01-01T00:00:00.000Z",
+        history: [],
+        completed: false,
+      },
+      {
+        id: "future",
+        kind: "mother",
+        sourceId: "A01",
+        stage: 2,
+        nextReviewAt: "2099-01-01T00:00:00.000Z",
+        history: [],
+        completed: false,
+      },
+    );
+  });
+  const before = JSON.stringify(storage.load()),
+    plan = scheduler.plan();
+  assert.match(plan.steps[0].detail, /L5.*L6/);
+  assert.match(plan.steps[1].title, /E02.*R1/);
+  assert.match(plan.steps[2].title, /E03.*R2/);
+  assert.match(plan.steps[3].title, /完成后的回忆/);
+  assert.match(plan.steps[4].title, /新母句/);
+  assert.equal(plan.upcoming.length, 1);
+  assert.equal(JSON.stringify(storage.load()), before);
+  assert.equal(scheduler.next().session.sessionId, s.sessionId);
+});

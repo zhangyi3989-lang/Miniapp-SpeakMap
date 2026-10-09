@@ -26,6 +26,17 @@
   <view wx:if="{{demo}}" class="demo">
     <text class="demo-dot">●</text> 当前为示例模式 · 文字训练<view class="small">反馈用于演示流程，并非对输入的真实分析。</view>
   </view>
+  <view class="card blue">
+    <view class="subtitle">接下来的学习安排</view>
+    <view wx:for="{{plan.steps}}" wx:key="title" class="plan-step">
+      <view class="badge">{{index + 1}}</view>
+      <view class="grow"><view class="plan-title">{{item.title}}</view><view class="muted small">{{item.detail}}</view></view>
+    </view>
+    <view wx:if="{{!plan.steps.length}}" class="muted">当前没有待完成任务，可以自由表达或浏览学习库。</view>
+    <view wx:if="{{plan.upcoming.length}}" class="label">之后到期的复习</view>
+    <view wx:for="{{plan.upcoming}}" wx:key="title" class="line"><view>{{item.title}}</view><view class="muted small">{{item.detail}}</view></view>
+    <view class="muted small plan-note">不用今天全部完成。每次从停下的位置继续；安排会随学习进度和复习结果更新。</view>
+  </view>
   <view class="section-title">
     <text class="marker">把一句，练成一段</text>
   </view>
@@ -43,37 +54,5 @@
       <view class="small muted">用自己的观点回答</view>
     </view>
   </view>
-  <view class="card green" bindtap="reviews">
-    <view class="row">
-      <view class="mini-icon green-icon">↻</view>
-      <view class="grow">
-        <view class="subtitle">今日到期复习</view>
-        <view class="muted">{{stats.due ? '先自己回忆，再看参考。' : '今天没有到期复习。'}}</view>
-      </view>
-      <view class="number">{{stats.due}}</view>
-    </view>
-  </view>
-  <view class="section-title">
-    <text class="marker">每次表达，都有记录</text>
-  </view>
-  <view class="stats-grid">
-    <view class="stat">
-      <view class="number">{{stats.started}}</view>
-      <view class="muted">已训练母句</view>
-    </view>
-    <view class="stat">
-      <view class="number">{{stats.answers}}</view>
-      <view class="muted">累计回答</view>
-    </view>
-    <view class="stat">
-      <view class="number">{{stats.days}}</view>
-      <view class="muted">训练天数</view>
-    </view>
-    <view class="stat">
-      <view class="number">{{stats.stages}}</view>
-      <view class="muted">完成训练阶段</view>
-    </view>
-  </view>
-  <view wx:if="{{!stats.answers}}" class="empty">第一次练习，就从一句自己的话开始。</view>
   <view class="footnote">学习数据仅保存在当前设备</view>
 </view>

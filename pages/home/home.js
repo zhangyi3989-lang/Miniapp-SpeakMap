@@ -1,10 +1,10 @@
-const stats = require("../../services/statsService");
+const scheduler = require("../../services/learningScheduler");
 const ui = require("../../utils/page");
 Page({
   data: { demo: ui.demo },
   onShow() {
     this.setData({
-      stats: stats.get(),
+      plan: scheduler.plan(),
     });
   },
   start: ui.today,
@@ -13,8 +13,5 @@ Page({
   },
   free() {
     wx.navigateTo({ url: "/pages/free-expression/free-expression" });
-  },
-  reviews() {
-    wx.switchTab({ url: "/pages/review/review" });
   },
 });
