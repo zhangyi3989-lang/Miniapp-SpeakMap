@@ -1,0 +1,4 @@
+{
+  "desc": "SpeakMap 本地学习工具",
+  "rules": [{ "action": "disallow", "page": "*" }]
+}

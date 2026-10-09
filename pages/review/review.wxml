@@ -1,0 +1,48 @@
+<view class="page">
+  <block wx:if="{{!session}}">
+    <view class="eyebrow">RETRIEVAL FIRST</view>
+    <view class="title">先回忆，再看参考</view>
+    <view class="muted">到期 {{dueCount}} 项。只记录练习行为和你的自评。</view>
+    <button class="primary" bindtap="continue">继续任务 / 开始到期复习</button>
+    <view wx:if="{{!dueCount}}" class="card green">今天没有到期复习。</view>
+    <view wx:for="{{items}}" wx:key="id" class="card" bindtap="open" data-id="{{item.id}}">
+      <view class="row">
+        <view class="badge">R{{item.stage+1}}</view>
+        <view class="muted">{{item.isDue ? '到期，开始 →' : item.date + ' 到期'}}</view>
+      </view>
+      <view class="subtitle">{{item.kind === 'mother' ? item.label : '学习库条目（参考在回忆后显示）'}}</view>
+    </view>
+    <view wx:if="{{!items.length}}" class="empty">完成首次训练或加入学习库后，会安排复习。</view>
+    <view wx:if="{{practiceMothers.length}}" class="subtitle">换场景练习</view>
+    <button wx:for="{{practiceMothers}}" wx:key="id" data-id="{{item.id}}" bindtap="practice">
+      {{item.id}} · 写一个新的生活场景
+    </button>
+  </block>
+  <block wx:else>
+    <view class="badge">R{{stage+1}} / R5 · {{task.name}}</view>
+    <view class="title">{{task.prompt}}</view>
+    <view class="muted">先自己想一想。当前没有参考答案。</view>
+    <textarea
+      value="{{input}}"
+      maxlength="{{max}}"
+      bindinput="input"
+      disabled="{{session.revealed}}"
+      placeholder="写下你想起来的表达。"
+    />
+    <button wx:if="{{!session.revealed}}" class="primary" bindtap="reveal">保存回忆，查看参考</button>
+    <block wx:if="{{session.revealed}}">
+      <view class="card purple">
+        <view class="label">参考表达（不是对你输入的判断）</view>
+        <view class="english">{{task.reference}}</view>
+      </view>
+      <view class="label">换场景造句（可选，只保存，不评分）</view>
+      <textarea value="{{scene}}" maxlength="{{max}}" bindinput="scene" placeholder="换一个自己的新场景。" />
+      <view class="row">
+        <button class="primary grow" data-recalled="yes" bindtap="rate" disabled="{{busy}}">想起来了</button>
+        <button class="secondary grow" data-recalled="no" bindtap="rate" disabled="{{busy}}">还需要复习</button>
+      </view>
+      <view class="muted">想起来了：进入下一阶段；还需要复习：次日再试。完成 R5 只表示完成复习周期。</view>
+    </block>
+    <view wx:if="{{error}}" class="error">{{error}}</view>
+  </block>
+</view>

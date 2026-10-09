@@ -1,0 +1,14 @@
+<view class="page">
+  <view class="title">保管好你的学习记录</view>
+  <view class="card green">
+    <view>数据保存在当前设备。卸载或清理小程序可能导致丢失。</view>
+    <view class="muted">复制 JSON 后，粘贴到你信任的笔记工具保存。备份包含你的原始回答，请妥善保管。</view>
+    <button class="primary" bindtap="copy">复制备份数据</button>
+  </view>
+  <view class="subtitle">从备份恢复</view>
+  <textarea value="{{text}}" bindinput="input" maxlength="5242880" placeholder="粘贴完整的备份 JSON" />
+  <view wx:if="{{error}}" class="error">{{error}}</view>
+  <button class="secondary" bindtap="restore">校验并恢复备份</button>
+  <view class="spacer" />
+  <button class="danger" bindtap="clear">清空所有学习数据</button>
+</view>

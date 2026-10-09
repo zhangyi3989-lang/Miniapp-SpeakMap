@@ -1,0 +1,51 @@
+<view class="page">
+  <view wx:if="{{item}}">
+    <view class="badge">{{item.provenance === 'demo_reference' ? '示例内容 · 不代表对你输入的分析' : '学习内容'}}</view>
+    <block wx:if="{{!editing}}">
+      <view class="title">{{text}}</view>
+      <view class="card">
+        <view class="label">中文意思 / 区别</view>
+        <view>{{meaning}}</view>
+        <view wx:if="{{item.myExpression}}" class="label">原表达</view>
+        <view>{{item.myExpression}}</view>
+        <view wx:if="{{item.why}}" class="label">WHY</view>
+        <view>{{item.why}}</view>
+        <view wx:if="{{item.example}}" class="label">例句</view>
+        <view>{{item.example}}</view>
+      </view>
+      <view class="muted">来源：{{item.sourceMotherSentenceId || '自由表达'}} · R{{item.reviewStage+1}}</view>
+      <view class="muted">
+        复习状态：{{item.reviewStatus === 'completed_review_cycle' ? '完成复习周期' : '已安排复习'}}
+      </view>
+      <button class="secondary" bindtap="edit">编辑内容</button>
+      <button class="danger" bindtap="remove">删除条目</button>
+    </block>
+    <block wx:else>
+      <view class="label">表达</view>
+      <textarea value="{{text}}" data-field="text" bindinput="change" maxlength="{{max}}" />
+      <view class="label">中文意思 / 区别</view>
+      <textarea value="{{meaning}}" data-field="meaning" bindinput="change" maxlength="{{max}}" />
+      <block wx:if="{{item.bankType !== 'expression'}}">
+        <view class="label">原表达</view>
+        <textarea value="{{myExpression}}" data-field="myExpression" bindinput="change" maxlength="{{max}}" />
+        <view class="label">WHY</view>
+        <textarea value="{{why}}" data-field="why" bindinput="change" maxlength="{{max}}" />
+      </block>
+      <block wx:else>
+        <view class="label">例句</view>
+        <textarea value="{{example}}" data-field="example" bindinput="change" maxlength="{{max}}" />
+      </block>
+      <button class="primary" bindtap="save">保存修改</button>
+      <button bindtap="cancel">取消</button>
+    </block>
+    <view class="card">
+      <view class="subtitle">复习记录</view>
+      <view wx:for="{{item.reviewHistory}}" wx:key="at" class="line">
+        {{item.at}} · R{{item.stage+1}} · {{item.recalled ? '想起来了' : '还需要复习'}}
+        <view class="text small">{{item.answer}}</view>
+        <view wx:if="{{item.sceneAnswer}}" class="muted text">换场景：{{item.sceneAnswer}}</view>
+      </view>
+      <view wx:if="{{!item.reviewHistory.length}}" class="muted">还没有复习记录。</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,16 @@
+<view class="page">
+  <view class="badge">{{mother.id}} · 快速理解</view>
+  <view class="title">{{mother.skeleton}}</view>
+  <view class="card hero">
+    <view class="subtitle">核心语感</view>
+    <view>{{mother.meaning}}</view>
+  </view>
+  <view class="label">什么时候会用到</view>
+  <view><text wx:for="{{mother.scenes}}" wx:key="*this" class="tag">{{item}}</text></view>
+  <view class="card">
+    <view class="subtitle">听起来是什么样</view>
+    <view wx:for="{{mother.examples}}" wx:key="*this" class="line english">{{item}}</view>
+  </view>
+  <button class="primary" bindtap="start">{{progress ? '继续学习 / 查看复习' : '开始训练'}}</button>
+  <view class="muted">已存在未完成任务时，将先继续原任务。</view>
+</view>

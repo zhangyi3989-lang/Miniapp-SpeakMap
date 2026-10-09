@@ -1,0 +1,13 @@
+<view class="page">
+  <view class="eyebrow">YOUR LANGUAGE MAP</view>
+  <view class="title">母句训练</view>
+  <view class="muted">先理解核心意思，再主动调取。</view>
+  <view wx:for="{{items}}" wx:key="id" class="card" bindtap="open" data-id="{{item.id}}">
+    <view class="row">
+      <view class="badge">{{item.id}}</view>
+      <view class="muted">{{item.status}} →</view>
+    </view>
+    <view class="english">{{item.skeleton}}</view>
+    <view class="muted">{{item.meaning}}</view>
+  </view>
+</view>

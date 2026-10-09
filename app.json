@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/mother-list/mother-list",
+    "pages/mother-detail/mother-detail",
+    "pages/training/training",
+    "pages/free-expression/free-expression",
+    "pages/feedback/feedback",
+    "pages/candidate-select/candidate-select",
+    "pages/bank/bank",
+    "pages/bank-detail/bank-detail",
+    "pages/review/review",
+    "pages/profile/profile",
+    "pages/backup/backup",
+    "pages/record/record"
+  ],
+  "window": {
+    "navigationBarTitleText": "SpeakMap",
+    "navigationBarBackgroundColor": "#FFF9F1",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FFF9F1"
+  },
+  "tabBar": {
+    "color": "#84776F",
+    "selectedColor": "#E66735",
+    "backgroundColor": "#FFFCF7",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/bank/bank",
+        "text": "学习库"
+      },
+      {
+        "pagePath": "pages/review/review",
+        "text": "复习"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

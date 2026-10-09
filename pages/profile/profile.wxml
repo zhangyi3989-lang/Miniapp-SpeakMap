@@ -1,0 +1,48 @@
+<view class="page">
+  <view class="brand">
+    <view class="logo">S</view>
+    我的 SpeakMap
+  </view>
+  <view class="card purple">
+    <view class="subtitle">每次开口，都留下真实记录</view>
+    <view class="muted">数据只保存在当前设备，不会自动跨设备同步。</view>
+  </view>
+  <view class="grid">
+    <view class="stat">
+      <view class="number">{{stats.days}}</view>
+      <view class="muted">训练天数</view>
+    </view>
+    <view class="stat">
+      <view class="number">{{stats.answers}}</view>
+      <view class="muted">累计回答</view>
+    </view>
+    <view class="stat">
+      <view class="number">{{stats.started}}</view>
+      <view class="muted">已开始母句</view>
+    </view>
+    <view class="stat">
+      <view class="number">{{stats.completed}}</view>
+      <view class="muted">完成首次训练</view>
+    </view>
+    <view class="stat">
+      <view class="number">{{stats.reviews}}</view>
+      <view class="muted">复习次数</view>
+    </view>
+    <view class="stat">
+      <view class="number">{{stats.banks}}</view>
+      <view class="muted">学习库条目</view>
+    </view>
+  </view>
+  <button bindtap="backup">数据备份 / 恢复 / 清空</button>
+  <view class="subtitle">最近训练记录</view>
+  <view wx:for="{{records}}" wx:key="sessionId" class="card" data-id="{{item.sessionId}}" bindtap="record">
+    <view class="row">
+      <view>{{item.motherSentenceId || '自由表达 / 学习库复习'}}</view>
+      <view class="muted">{{item.date}}</view>
+    </view>
+    <view class="small muted">
+      {{item.sessionType === 'review' ? '复习' : item.phase === 'phase0' ? 'Phase 0' : item.level}} · {{item.completed ? '已完成' : '进行中'}} · {{item.answers.length}} 条回答 →
+    </view>
+  </view>
+  <view wx:if="{{!records.length}}" class="empty">还没有训练记录。先写下一句自己的话吧。</view>
+</view>

@@ -1,0 +1,21 @@
+<view class="page">
+  <view class="eyebrow">CHOOSE WHAT MATTERS</view>
+  <view class="title">带走值得练的表达</view>
+  <view class="muted">候选来自本轮训练。由你决定，不会自动入库。</view>
+  <checkbox-group bindchange="select">
+    <label wx:for="{{items}}" wx:key="id" class="candidate">
+      <checkbox value="{{item.id}}" checked="{{item.checked}}" />
+      <view class="grow">
+        <view class="badge">{{item.provenance === 'demo_reference' ? '示例候选' : 'AI 候选'}} · {{item.typeName}}</view>
+        <view class="english">{{item.text}}</view>
+        <view class="muted">{{item.meaning}}</view>
+        <view wx:if="{{item.bankType === 'mistake'}}" class="muted">示例中的错误，不代表你本次说错。</view>
+      </view>
+    </label>
+  </checkbox-group>
+  <view wx:if="{{!items.length}}" class="empty">这次没有需要入库的候选。</view>
+  <button wx:if="{{items.length}}" class="primary" bindtap="add" disabled="{{busy}}">
+    加入学习库（{{selected.length}}）
+  </button>
+  <button bindtap="home">完成，回首页</button>
+</view>

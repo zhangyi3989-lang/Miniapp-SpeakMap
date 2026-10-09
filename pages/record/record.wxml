@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="title">训练记录</view>
+  <view wx:if="{{session}}">
+    <view class="muted">{{session.motherSentenceId || '自由表达 / 复习'}} · {{session.createdAt}}</view>
+    <view class="muted">
+      {{session.completed ? '已完成' : '进行中'}} · {{session.level}} · {{session.answers.length}} 条回答
+    </view>
+    <view wx:for="{{session.answers}}" wx:key="id" class="card">
+      <view class="badge">{{item.level || '回忆'}} · 用户原始输入</view>
+      <view class="text">{{item.text}}</view>
+      <view class="muted small">{{item.at}}</view>
+      <view wx:if="{{item.feedback}}" class="demo">
+        {{item.feedback.mode === 'demo' ? '示例反馈 · 不代表对本次输入的分析' : 'AI 反馈'}}
+      </view>
+      <view wx:if="{{item.feedback}}" class="text">{{item.feedback.revisedAnswer}}</view>
+    </view>
+    <view wx:if="{{session.sceneAnswer}}" class="card green">
+      <view class="label">换场景造句</view>
+      <view class="text">{{session.sceneAnswer}}</view>
+    </view>
+    <view wx:if="{{!session.answers.length}}" class="empty">这次还没有提交回答。</view>
+  </view>
+</view>

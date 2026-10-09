@@ -1,0 +1,91 @@
+<view class="page">
+  <view wx:if="{{session}}">
+    <view wx:if="{{mother}}" class="english">{{mother.skeleton}}</view>
+    <view wx:if="{{demo}}" class="demo">当前为示例模式</view>
+    <block wx:if="{{session.completed}}">
+      <view class="title">这一轮完成了</view>
+      <view class="card green">
+        已保存 {{session.answers.length}} 条真实回答。{{session.sessionType === 'training' ? 'R1 已安排在 ' + r1Days + ' 天后；训练完成不代表系统判断掌握。' : '你的表达已经保存在当前设备。'}}
+      </view>
+      <button wx:if="{{session.candidates.length}}" class="primary" bindtap="candidates">选择学习库候选</button>
+      <button bindtap="home">回首页</button>
+    </block>
+    <block wx:elif="{{session.phase === 'phase0'}}">
+      <view class="badge">Phase 0 · 快速学习</view>
+      <view class="title">先抓住这个意思</view>
+      <view class="card hero">{{mother.meaning}}</view>
+      <view><text wx:for="{{mother.scenes}}" wx:key="*this" class="tag">{{item}}</text></view>
+      <view class="card"><view wx:for="{{mother.examples}}" wx:key="*this" class="line english">{{item}}</view></view>
+      <button class="primary" bindtap="begin">理解了，进入 L1</button>
+    </block>
+    <block wx:else>
+      <view class="row">
+        <view class="badge">{{session.sessionType === 'training' ? session.level + ' / L6' : task.title}}</view>
+        <view wx:if="{{task.total}}" class="muted">{{session.itemIndex+1}} / {{task.total}}</view>
+      </view>
+      <view class="title">{{task.title}}</view>
+      <view wx:if="{{task.map.length}}" class="map">
+        <view
+          wx:for="{{task.map}}"
+          wx:key="label"
+          class="node {{item.active ? 'active' : ''}} {{item.done ? 'done' : ''}}"
+        >
+          {{item.label}}{{index &lt; task.map.length-1 ? ' →' : ''}}
+        </view>
+      </view>
+      <view class="card">
+        <view wx:if="{{task.topic}}" class="badge">{{task.topic}}</view>
+        <view class="subtitle">{{task.prompt}}</view>
+        <view wx:if="{{task.en}}" class="muted">{{task.en}}</view>
+        <view wx:if="{{task.hint}}" class="tag">思路：{{task.hint}}</view>
+        <view wx:if="{{task.action}}" class="muted">{{task.action}}</view>
+        <button wx:if="{{task.helpers.length &amp;&amp; !feedback}}" bindtap="helpers">
+          {{helperOpen ? '收起表达帮助' : '需要表达帮助'}}
+        </button>
+        <view wx:if="{{helperOpen}}">
+          <view wx:for="{{task.helpers}}" wx:key="*this" class="tag">{{item}}</view>
+          <view class="muted">提示中的表达不计为自主调用。</view>
+        </view>
+      </view>
+      <view wx:if="{{session.level === 'L4' || session.level === 'L6'}}" class="muted">前面的表达：</view>
+      <view wx:if="{{session.level === 'L4' || session.level === 'L6'}}">
+        <view wx:for="{{session.answers}}" wx:key="id" wx:if="{{item.level === session.level}}" class="line text small">
+          {{item.text}}
+        </view>
+      </view>
+      <view class="label">写下你的回答 · {{input.length}} / {{max}}</view>
+      <textarea
+        value="{{input}}"
+        bindinput="input"
+        maxlength="{{max}}"
+        disabled="{{busy || !!feedback}}"
+        placeholder="用自己的英语表达，不用追求完美。"
+      />
+      <view wx:if="{{error}}" class="error">{{error}}</view>
+      <button wx:if="{{!feedback}}" class="primary" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">
+        {{busy ? '正在保存…' : (error ? '重试提交' : '提交回答')}}
+      </button>
+      <view wx:if="{{feedback}}" class="card purple">
+        <view class="subtitle">{{feedback.mode === 'demo' ? '示例反馈' : 'AI 反馈'}}</view>
+        <view class="muted">{{feedback.overallFeedback.summary}}</view>
+        <view class="label">我的表达</view>
+        <view class="text">{{input}}</view>
+        <view class="label">
+          {{feedback.mode === 'demo' ? '参考表达 / 示例修改版（不是对你输入的修改）' : '修改版'}}
+        </view>
+        <view class="text english">{{feedback.revisedAnswer}}</view>
+        <view wx:for="{{feedback.languageIssues}}" wx:key="original" class="line">
+          {{item.original}} → {{item.suggestion}}
+          <view class="muted">WHY：{{item.why}}</view>
+        </view>
+        <view wx:for="{{feedback.naturalUpgrades}}" wx:key="original" class="line">
+          {{item.original}} → {{item.upgrade}}
+          <view class="muted">{{item.why}}</view>
+        </view>
+        <button class="primary" bindtap="next">
+          {{session.sessionType === 'training' ? '保存并继续 →' : '完成本次练习'}}
+        </button>
+      </view>
+    </block>
+  </view>
+</view>

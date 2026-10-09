@@ -1,0 +1,24 @@
+<view class="page">
+  <view class="title">{{feedback.mode === 'demo' ? '示例反馈' : 'AI 反馈'}}</view>
+  <view wx:if="{{feedback.mode === 'demo'}}" class="demo">{{notice}}</view>
+  <view wx:if="{{feedback}}" class="card">
+    <view>{{feedback.overallFeedback.summary}}</view>
+    <view class="label">我的表达</view>
+    <view class="text">{{original}}</view>
+    <view class="label">{{feedback.mode === 'demo' ? '参考表达 / 示例修改版（不是对你输入的修改）' : '修改版'}}</view>
+    <view class="text english">{{feedback.revisedAnswer}}</view>
+    <view wx:for="{{feedback.languageIssues}}" wx:key="original" class="line">
+      {{item.original}} → {{item.suggestion}}
+      <view class="muted">WHY：{{item.why}}</view>
+    </view>
+    <view wx:for="{{feedback.naturalUpgrades}}" wx:key="original" class="line">
+      {{item.original}} → {{item.upgrade}}
+      <view class="muted">{{item.why}}</view>
+    </view>
+  </view>
+  <button wx:if="{{feedback &amp;&amp; !session.completed}}" class="primary" bindtap="finish" disabled="{{busy}}">
+    完成本次练习，选择候选
+  </button>
+  <button wx:if="{{session.completed}}" class="primary" bindtap="candidates">选择学习库候选</button>
+  <view wx:if="{{!feedback}}" class="empty">暂无反馈，请返回训练页。</view>
+</view>
