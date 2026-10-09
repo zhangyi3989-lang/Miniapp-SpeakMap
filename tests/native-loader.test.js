@@ -70,13 +70,13 @@ function runtime(legacyTraining = false) {
   };
 }
 
-test("复现旧目录引用中断注册，修复后 13 个页面按微信文件解析规则全部注册", () => {
+test("复现旧目录引用中断注册，修复后 14 个页面按微信文件解析规则全部注册", () => {
   const broken = runtime(true);
   assert.throws(() => broken.boot(), /services\/ai\.js/);
   assert.equal(broken.pages.has("pages/profile/profile"), false);
   const fixed = runtime();
   fixed.boot();
-  assert.equal(fixed.pages.size, 13);
+  assert.equal(fixed.pages.size, 14);
   assert.equal(fixed.components.size, 2);
   assert.equal(
     fixed.components.get("/components/brand-mascot/brand-mascot").properties

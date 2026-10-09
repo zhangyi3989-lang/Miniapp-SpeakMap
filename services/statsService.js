@@ -7,7 +7,10 @@ module.exports = {
       answers = d.sessions.flatMap((s) => s.answers);
     return {
       days: new Set(answers.map((a) => day(a.at))).size,
-      answers: answers.length,
+      answers: answers.reduce(
+        (n, a) => n + (Array.isArray(a.sentences) ? a.sentences.length : 1),
+        0,
+      ),
       started: Object.keys(d.motherSentenceProgress).length,
       completed: Object.values(d.motherSentenceProgress).filter(
         (p) => p.firstTrainingCompletedAt,
@@ -19,7 +22,12 @@ module.exports = {
             n +
             (s.completed
               ? 6
-              : ["L1", "L2", "L3", "L4", "L5", "L6"].indexOf(s.level)),
+              : Math.max(
+                  ["L1", "L2", "L3", "L4", "L5", "L6"].indexOf(s.level),
+                  ["L1", "L2", "L3", "L4", "L5", "L6"].indexOf(
+                    s.highestLevel || s.level,
+                  ),
+                )),
           0,
         ),
       reviews: d.reviews.reduce((n, r) => n + r.history.length, 0),

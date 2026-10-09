@@ -3,6 +3,7 @@
     "pages/home/home",
     "pages/mother-list/mother-list",
     "pages/mother-detail/mother-detail",
+    "pages/mother-lesson/mother-lesson",
     "pages/training/training",
     "pages/free-expression/free-expression",
     "pages/feedback/feedback",

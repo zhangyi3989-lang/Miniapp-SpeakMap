@@ -3,7 +3,7 @@ const storage = require("../../services/storage");
 const training = require("../../services/trainingService");
 const ui = require("../../utils/page");
 Page({
-  data: { expanded: false, selected: "", checkResult: null },
+  data: { expanded: true, selected: "", checkResult: null },
   onLoad(q) {
     this.mid = q.id;
     this.fromTraining = q.from === "training";
@@ -25,14 +25,6 @@ Page({
             .exampleNotes[i] || "",
       })),
       progress: storage.load().motherSentenceProgress[this.mid] || null,
-    });
-  },
-  details() {
-    wx.navigateTo({
-      url:
-        "/pages/mother-lesson/mother-lesson?id=" +
-        this.mid +
-        (this.fromTraining ? "&from=training" : ""),
     });
   },
   toggleDetails() {

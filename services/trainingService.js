@@ -40,6 +40,7 @@ function create(type, motherId, extra = {}) {
         logicNodeIndex: 0,
         linkRound: 0,
         topicIndex: 0,
+        batchTasks: type === "training" ? makeBatchTasks(motherId) : {},
         answers: [],
         feedback: null,
         candidates: [],
@@ -60,8 +61,51 @@ function create(type, motherId, extra = {}) {
     return s;
   });
 }
+function makeBatchTasks(motherId) {
+  const m = mothers.find((m) => m.id === motherId),
+    result = {};
+  for (const level of ["L1", "L2"])
+    if (config.training[level].batchEnabled)
+      result[level] = {
+        startIndex: 0,
+        count: Math.min(
+          config.training[level].itemCount,
+          m[level.toLowerCase()].length,
+        ),
+      };
+  return result;
+}
+function prepareBatch(sid) {
+  const s = get(sid);
+  if (
+    !s ||
+    s.sessionType !== "training" ||
+    s.completed ||
+    s.feedback ||
+    !["L1", "L2"].includes(s.level) ||
+    !config.training[s.level].batchEnabled ||
+    (s.batchTasks && s.batchTasks[s.level])
+  )
+    return s;
+  return update(sid, (now) => {
+    if (now.feedback) return;
+    const limit = makeBatchTasks(now.motherSentenceId)[now.level].count;
+    now.batchTasks = now.batchTasks || {};
+    now.batchTasks[now.level] = {
+      startIndex: now.itemIndex,
+      count: limit - now.itemIndex,
+    };
+  });
+}
+function answerCount(s) {
+  return s.answers.reduce(
+    (n, a) => n + (Array.isArray(a.sentences) ? a.sentences.length : 1),
+    0,
+  );
+}
 function count(s) {
   const m = mothers.find((m) => m.id === s.motherSentenceId);
+  if (s.batchTasks && s.batchTasks[s.level]) return 1;
   if (s.level === "L6")
     return Math.min(config.training.L6.topics, m.topics.length) + 1;
   const fields = { L1: "l1", L2: "l2", L3: "l3", L4: "chain", L5: "links" };
@@ -103,6 +147,35 @@ function task(s) {
     helpers: [],
     reference: m.examples[0],
   };
+  const batch = s.batchTasks && s.batchTasks[s.level];
+  if (batch && ["L1", "L2"].includes(s.level)) {
+    const prompts =
+      s.level === "L2"
+        ? m.l2
+            .slice(batch.startIndex, batch.startIndex + batch.count)
+            .map((x, j) => ({ number: batch.startIndex + j + 1, text: x[0] }))
+        : [];
+    return Object.assign(base, {
+      batch: true,
+      batchCount: batch.count,
+      prompts,
+      prompt:
+        s.level === "L1"
+          ? `根据自己的生活，用当前母句连续造 ${batch.count} 个句子。每行一句，写完后一起提交。`
+          : `按顺序翻译下面 ${batch.count} 个中文句子，每行写一句英文，一次性提交。`,
+      hint: batch.startIndex
+        ? `之前的 ${batch.startIndex} 个回答已保留，只补剩余内容。`
+        : "",
+      reference:
+        s.level === "L2"
+          ? m.l2
+              .slice(batch.startIndex, batch.startIndex + batch.count)
+              .map((x, j) => `${batch.startIndex + j + 1}. ${x[1]}`)
+              .join("\n")
+          : m.examples.join("\n"),
+      placeholder: `每行一句，共 ${batch.count} 行。可以在同一个输入框里连续写完。`,
+    });
+  }
   if (s.level === "L1") return Object.assign(base, { prompt: m.l1[i] });
   if (s.level === "L2" || s.level === "L3") {
     const a = m[s.level === "L2" ? "l2" : "l3"][i];
@@ -128,9 +201,37 @@ function task(s) {
     });
   const t = m.topics[i < 2 ? 0 : 1];
   return Object.assign(base, {
-    prompt: i === 1 ? "沿刚才的思路继续增加具体信息，不要重复上一段。" : t[0],
+    prompt: t[0],
+    instruction:
+      i === 0
+        ? "先围绕这个话题说约 30 秒：表达观点，并说明一个原因。"
+        : i === 1
+          ? "在刚才约 30 秒的回答基础上，补充例子与影响，把整段扩展到约 60 秒。请提交完整的一段。"
+          : "",
+    progressLabel:
+      i === 0
+        ? "话题 1 · 30 秒"
+        : i === 1
+          ? "话题 1 · 扩展到 60 秒"
+          : "话题 2 · 自由输出",
+    map:
+      i < 2
+        ? t[2]
+            .split("→")
+            .slice(0, i === 0 ? 2 : undefined)
+            .map((label) => ({
+              label: label.trim(),
+              active: false,
+              done: false,
+            }))
+        : [],
+    previousText:
+      i === 1
+        ? (s.answers.find((a) => a.level === "L6" && a.itemIndex === 0) || {})
+            .text || ""
+        : "",
     en: t[1],
-    hint: i < 2 ? t[2] : "",
+    hint: "",
     reference: t[3],
     topic: i < 2 ? "Topic 1" : "Topic 2",
   });
@@ -147,12 +248,15 @@ function update(sid, fn) {
 function saveDraft(sid, text) {
   update(sid, (s) => {
     s.draft = text;
+    s.stepDrafts = s.stepDrafts || {};
+    s.stepDrafts[answerKey(s)] = text;
   });
 }
 function begin(sid) {
   update(sid, (s, d) => {
     if (s.phase !== "phase0") return;
     s.phase = "training";
+    restoreStep(s);
     d.motherSentenceProgress[s.motherSentenceId].phase0Done = true;
   });
 }
@@ -172,6 +276,16 @@ async function submit(sid, text, analyzer) {
     const key = answerKey(s);
     if (s.answers.some((a) => a.key === key)) return s;
     const current = task(s);
+    const sentences = current.batch
+      ? cleaned
+          .split(/\r?\n/)
+          .map((line) => line.trim())
+          .filter(Boolean)
+      : null;
+    if (sentences && sentences.length !== current.batchCount)
+      throw new Error(
+        `请每行写一句，共填写 ${current.batchCount} 行。现在有 ${sentences.length} 行。`,
+      );
     const feedback = await analyzer({
       text: cleaned,
       reference: current.reference,
@@ -206,6 +320,7 @@ async function submit(sid, text, analyzer) {
         id: id("answer"),
         key,
         text: cleaned,
+        ...(sentences ? { sentences } : {}),
         at: new Date().toISOString(),
         level: now.level,
         itemIndex: now.itemIndex,
@@ -255,6 +370,57 @@ function advance(sid) {
     s.logicNodeIndex = s.level === "L4" ? s.itemIndex : 0;
     s.linkRound = s.level === "L5" ? s.itemIndex : 0;
     s.topicIndex = s.level === "L6" ? (s.itemIndex < 2 ? 0 : 1) : 0;
+    const currentRank = levels.indexOf(s.level),
+      highestRank = levels.indexOf(s.highestLevel || s.level);
+    s.highestLevel = levels[Math.max(currentRank, highestRank)];
+    if (!s.completed) restoreStep(s);
+  });
+}
+function syncCursor(s) {
+  s.logicNodeIndex = s.level === "L4" ? s.itemIndex : 0;
+  s.linkRound = s.level === "L5" ? s.itemIndex : 0;
+  s.topicIndex = s.level === "L6" ? (s.itemIndex < 2 ? 0 : 1) : 0;
+}
+function restoreStep(s) {
+  const answer = s.answers.find((a) => a.key === answerKey(s));
+  s.feedback = answer ? answer.feedback : null;
+  s.draft = answer ? answer.text : (s.stepDrafts || {})[answerKey(s)] || "";
+}
+function canGoBack(s) {
+  return (
+    !!s &&
+    !s.completed &&
+    s.sessionType === "training" &&
+    s.phase !== "phase0" &&
+    (s.level !== "L1" ||
+      (!(s.batchTasks && s.batchTasks.L1) && s.itemIndex > 0) ||
+      config.training.phase0Enabled)
+  );
+}
+function back(sid) {
+  if (locks.has(sid)) throw new Error("正在保存，请稍候。");
+  return update(sid, (s) => {
+    if (!canGoBack(s)) return;
+    if (!s.highestLevel) s.highestLevel = s.level;
+    s.stepDrafts = s.stepDrafts || {};
+    s.stepDrafts[answerKey(s)] = s.draft || "";
+    if (
+      s.level === "L1" &&
+      ((s.batchTasks && s.batchTasks.L1) || s.itemIndex === 0)
+    ) {
+      s.phase = "phase0";
+      s.feedback = null;
+      return;
+    }
+    if (s.itemIndex > 0 && !(s.batchTasks && s.batchTasks[s.level]))
+      s.itemIndex--;
+    else {
+      s.level = levels[levels.indexOf(s.level) - 1];
+      const plan = s.batchTasks && s.batchTasks[s.level];
+      s.itemIndex = plan ? plan.startIndex : count(s) - 1;
+    }
+    syncCursor(s);
+    restoreStep(s);
   });
 }
 function reveal(sid, text) {
@@ -286,4 +452,8 @@ module.exports = {
   reveal,
   update,
   answerKey,
+  prepareBatch,
+  answerCount,
+  back,
+  canGoBack,
 };

@@ -20,7 +20,7 @@ Page({
   },
   refresh() {
     ui.guard(() => {
-      const s = training.get(this.sid);
+      const s = training.prepareBatch(this.sid);
       if (!s) {
         wx.navigateBack();
         return;
@@ -32,6 +32,8 @@ Page({
       const m = mothers.find((m) => m.id === s.motherSentenceId) || null;
       this.setData({
         session: s,
+        answerCount: training.answerCount(s),
+        canGoBack: training.canGoBack(s),
         mother: m,
         task: s.completed ? null : training.task(s),
         input: s.draft || "",
@@ -48,6 +50,14 @@ Page({
     } catch (err) {
       this.setData({ error: err.message });
     }
+  },
+  explain() {
+    wx.navigateTo({
+      url:
+        "/pages/mother-detail/mother-detail?id=" +
+        this.data.session.motherSentenceId +
+        "&from=training",
+    });
   },
   begin() {
     ui.guard(() => {
@@ -82,6 +92,14 @@ Page({
     } finally {
       this.setData({ busy: false });
     }
+  },
+  previous() {
+    if (this.data.busy) return;
+    ui.guard(() => {
+      training.back(this.sid);
+      this.setData({ helperOpen: false });
+      this.refresh();
+    });
   },
   next() {
     if (this.data.busy) return;

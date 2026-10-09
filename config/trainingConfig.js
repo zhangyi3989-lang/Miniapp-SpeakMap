@@ -3,8 +3,8 @@ module.exports = {
   submissionGuardMs: 400,
   training: {
     phase0Enabled: true,
-    L1: { itemCount: 6 },
-    L2: { itemCount: 6 },
+    L1: { itemCount: 6, batchEnabled: true },
+    L2: { itemCount: 6, batchEnabled: true },
     L3: { itemCount: 5 },
     L4: { defaultNodes: 5 },
     L5: { rounds: 2 },

@@ -99,7 +99,30 @@ function validate(data, strict = false) {
       throw new Error("训练阶段格式错误");
     if (new Set(s.answers.map((a) => a && a.key)).size !== s.answers.length)
       throw new Error("备份包含重复提交记录");
+    if (s.batchTasks !== undefined && !object(s.batchTasks))
+      throw new Error("批量训练断点格式错误");
+    for (const [level, plan] of Object.entries(s.batchTasks || {})) {
+      if (
+        !["L1", "L2"].includes(level) ||
+        !object(plan) ||
+        !Number.isInteger(plan.startIndex) ||
+        plan.startIndex < 0 ||
+        !Number.isInteger(plan.count) ||
+        plan.count < 1 ||
+        plan.startIndex + plan.count >
+          require("../config/trainingConfig").training[level].itemCount
+      )
+        throw new Error("批量训练范围错误");
+    }
     s.answers.forEach((a) => {
+      if (
+        a &&
+        a.sentences !== undefined &&
+        (!Array.isArray(a.sentences) ||
+          !a.sentences.length ||
+          a.sentences.some((x) => typeof x !== "string" || !x.trim()))
+      )
+        throw new Error("批量回答格式错误");
       if (
         !object(a) ||
         typeof a.text !== "string" ||

@@ -1,16 +1,13 @@
-<view class="page"><brand-header section="快速学习"/>
-  <view class="badge">{{mother.id}} · 快速理解</view>
+<view class="page">
+  <brand-header section="快速学习"/>
+  <view class="badge">{{mother.id}} · 核心内容</view>
   <view class="title"><text class="marker">{{mother.skeleton}}</text></view>
-  <view class="card hero">
-    <view class="subtitle">核心语感</view>
-    <view>{{mother.meaning}}</view>
-  </view>
+  <view class="card hero"><view class="subtitle">核心语感</view><view>{{mother.meaning}}</view></view>
   <view class="label">什么时候会用到</view>
   <view><text wx:for="{{mother.scenes}}" wx:key="*this" class="tag">{{item}}</text></view>
-  <view class="card">
-    <view class="subtitle">听起来是什么样</view>
-    <view wx:for="{{mother.examples}}" wx:key="*this" class="line english">{{item}}</view>
-  </view>
+  <view class="card"><view class="subtitle">听起来是什么样</view><view wx:for="{{examples}}" wx:key="en" class="line"><view class="english">{{item.en}}</view><view class="translation">{{item.zh}}</view></view></view>
+  <button class="secondary" bindtap="details">母句详细学习 →</button>
+  <view class="muted small">想深入理解用法，可以进入详细学习；也可以直接开始训练。</view>
   <button class="primary" bindtap="start">{{progress ? '继续学习 / 查看复习' : '开始训练'}}</button>
-  <view class="muted">已存在未完成任务时，将先继续原任务。</view>
+  <view class="muted small">已存在未完成任务时，将先继续原任务。</view>
 </view>

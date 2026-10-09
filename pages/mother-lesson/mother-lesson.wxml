@@ -1,0 +1,25 @@
+<view class="page">
+  <brand-header section="详细学习"/>
+  <view class="badge">{{mother.id}} · 先理解，再用自己的内容</view>
+  <view class="title"><text class="marker">{{mother.skeleton}}</text></view>
+  <view class="card hero"><view class="subtitle">这句话帮我说什么？</view><view>{{mother.meaning}}</view><view wx:if="{{lesson}}" class="lesson-note">{{lesson.plain}}</view></view>
+  <view class="label">什么时候会用到</view><view><text wx:for="{{mother.scenes}}" wx:key="*this" class="tag">{{item}}</text></view>
+  <block wx:if="{{lesson}}">
+    <view class="section-title"><text class="marker">把骨架拆开看</text></view>
+    <view wx:for="{{lesson.slots}}" wx:key="label" class="slot-card {{item.tone}}"><view class="row"><view class="slot-number">{{index+1}}</view><view class="grow"><view class="subtitle">{{item.label}}</view><view class="english">{{item.en}}</view><view class="muted">{{item.zh}}</view></view></view></view>
+    <view class="card green"><view class="subtitle">从一个中文意思，搭出一句话</view><view class="thought">{{lesson.thought}}</view><view wx:for="{{lesson.build}}" wx:key="label" class="line"><view class="label">{{index+1}} · {{item.label}}</view><view class="text">{{item.text}}</view></view><view class="worked english">{{lesson.worked}}</view><view class="muted">{{lesson.workedZh}}</view></view>
+  </block>
+  <view class="card"><view class="subtitle">看懂例句，也看懂它的用途</view><view wx:for="{{examples}}" wx:key="en" class="line"><view class="english">{{item.en}}</view><view class="translation">{{item.zh}}</view><view wx:if="{{item.note}}" class="muted small">{{item.note}}</view></view></view>
+  <block wx:if="{{lesson}}">
+    <button class="secondary" bindtap="toggleDetails">{{expanded ? '收起详细讲解 ↑' : '再看：用法区别与容易踩的坑 ↓'}}</button>
+    <block wx:if="{{expanded}}">
+      <view wx:for="{{lesson.contrasts}}" wx:key="title" class="card blue"><view class="subtitle">{{item.title}}</view><view class="english">{{item.a}}</view><view class="translation">{{item.aZh}}</view><view class="english">{{item.b}}</view><view class="translation">{{item.bZh}}</view><view class="lesson-note">{{item.why}}</view></view>
+      <view class="section-title"><text class="marker">记住这几个关键点</text></view><view wx:for="{{lesson.rules}}" wx:key="title" class="card pink"><view class="subtitle">{{item.title}}</view><view wx:if="{{item.wrong}}" class="wrong text">常见误用：{{item.wrong}}</view><view class="english text">{{item.right}}</view><view class="lesson-note">{{item.why}}</view></view>
+      <view class="card"><view class="subtitle">缺动作词时，参考这些小搭配</view><view wx:for="{{lesson.chunks}}" wx:key="en" class="line"><view class="english">{{item.en}}</view><view class="muted">{{item.zh}}</view></view><view class="small muted">只是可选词语，不是必须模仿的答案。</view></view>
+    </block>
+    <view class="card hero"><view class="subtitle">一个小检查：你看懂结构了吗？</view><view>{{lesson.check.prompt}}</view><button wx:for="{{lesson.check.options}}" wx:key="id" data-id="{{item.id}}" class="check-option {{selected === item.id ? 'chosen' : ''}}" bindtap="check">{{item.text}}</button><view wx:if="{{checkResult}}" class="check-explanation"><view class="subtitle">{{checkResult.correct ? '这道结构选择题选对了' : '再看看这一点'}}</view><view>{{checkResult.why}}</view><view class="small muted">这里只检查这一题的理解，不代表已经能自主表达。</view></view></view>
+    <view class="card green"><view class="subtitle">接下来，换成你自己的生活</view><view>{{lesson.personal}}</view><view class="muted small">进入 L1 后先自己回答，提交后再查看参考。</view></view>
+  </block>
+  <button class="primary" bindtap="start">{{progress ? '继续学习 / 查看复习' : '开始训练，用自己的内容说'}}</button>
+  <view class="muted small">已存在未完成任务时，将先继续原任务。教学自检不会改变训练进度。</view>
+</view>

@@ -5,7 +5,7 @@
     <block wx:if="{{session.completed}}">
       <view class="title"><text class="marker">这一轮完成了</text></view>
       <view class="card green">
-        已保存 {{session.answers.length}} 条真实回答。{{session.sessionType === 'training' ? 'R1 已安排在 ' + r1Days + ' 天后；训练完成不代表系统判断掌握。' : '你的表达已经保存在当前设备。'}}
+        已保存 {{answerCount}} 条真实回答。{{session.sessionType === 'training' ? 'R1 已安排在 ' + r1Days + ' 天后；训练完成不代表系统判断掌握。' : '你的表达已经保存在当前设备。'}}
       </view>
       <button wx:if="{{session.candidates.length}}" class="primary" bindtap="candidates">选择学习库候选</button>
       <button bindtap="home">回首页</button>
@@ -16,13 +16,15 @@
       <view class="card hero">{{mother.meaning}}</view>
       <view><text wx:for="{{mother.scenes}}" wx:key="*this" class="tag">{{item}}</text></view>
       <view class="card"><view wx:for="{{mother.examples}}" wx:key="*this" class="line english">{{item}}</view></view>
+      <button class="secondary" bindtap="explain">还没理解？查看槽位拆解与中文讲解</button>
       <button class="primary" bindtap="begin">理解了，进入 L1</button>
     </block>
     <block wx:else>
       <view class="row">
         <view class="badge">{{session.sessionType === 'training' ? session.level + ' / L6' : task.title}}</view>
-        <view wx:if="{{task.total}}" class="muted">{{session.itemIndex+1}} / {{task.total}}</view>
+        <view wx:if="{{task.total}}" class="muted">{{task.progressLabel || (task.batch ? '整组 · ' + task.batchCount + ' 句' : (session.itemIndex+1) + ' / ' + task.total)}}</view>
       </view>
+      <button wx:if="{{canGoBack}}" class="back-step" bindtap="previous" disabled="{{busy}}">← 上一步</button>
       <view class="title"><text class="marker">{{task.title}}</text></view>
       <view wx:if="{{task.map.length}}" class="map">
         <view
@@ -36,7 +38,9 @@
       <view class="card">
         <view wx:if="{{task.topic}}" class="badge">{{task.topic}}</view>
         <view class="subtitle">{{task.prompt}}</view>
+        <view wx:for="{{task.prompts}}" wx:key="number" class="line"><text class="badge">{{item.number}}</text> {{item.text}}</view>
         <view wx:if="{{task.en}}" class="muted">{{task.en}}</view>
+        <view wx:if="{{task.instruction}}" class="muted">{{task.instruction}}</view>
         <view wx:if="{{task.hint}}" class="tag">思路：{{task.hint}}</view>
         <view wx:if="{{task.action}}" class="muted">{{task.action}}</view>
         <button wx:if="{{task.helpers.length && !feedback}}" bindtap="helpers">
@@ -47,23 +51,24 @@
           <view class="muted">提示中的表达不计为自主调用。</view>
         </view>
       </view>
-      <view wx:if="{{session.level === 'L4' || session.level === 'L6'}}" class="muted">前面的表达：</view>
-      <view wx:if="{{session.level === 'L4' || session.level === 'L6'}}">
+      <view wx:if="{{session.level === 'L4'}}" class="muted">前面的表达：</view>
+      <view wx:if="{{session.level === 'L4'}}">
         <view wx:for="{{session.answers}}" wx:key="id" wx:if="{{item.level === session.level}}" class="line text small">
           {{item.text}}
         </view>
       </view>
+      <view wx:if="{{task.previousText}}" class="card"><view class="label">话题 1 · 刚才的 30 秒回答</view><view class="text">{{task.previousText}}</view></view>
       <view class="label">写下你的回答 · {{input.length}} / {{max}}</view>
       <textarea
         value="{{input}}"
         bindinput="input"
         maxlength="{{max}}"
         disabled="{{busy || !!feedback}}"
-        placeholder="用自己的英语表达，不用追求完美。"
+        placeholder="{{task.placeholder || '用自己的英语表达，不用追求完美。'}}"
       />
       <view wx:if="{{error}}" class="error">{{error}}</view>
       <button wx:if="{{!feedback}}" class="primary" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">
-        {{busy ? '正在保存…' : (error ? '重试提交' : '提交回答')}}
+        {{busy ? '正在保存…' : (error ? '重试提交' : (task.batch ? '一起提交这组回答' : '提交回答'))}}
       </button>
       <view wx:if="{{feedback}}" class="card purple">
         <view class="subtitle">{{feedback.mode === 'demo' ? '示例反馈' : 'AI 反馈'}}</view>
@@ -83,7 +88,7 @@
           <view class="muted">{{item.why}}</view>
         </view>
         <button class="primary" bindtap="next">
-          {{session.sessionType === 'training' ? '保存并继续 →' : '完成本次练习'}}
+          {{session.sessionType === 'training' ? (task.batch ? '进入下一阶段 →' : '保存并继续 →') : '完成本次练习'}}
         </button>
       </view>
     </block>

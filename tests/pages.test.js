@@ -1,3 +1,4 @@
+const answerInput = require("./answer-helper");
 const { test, beforeEach } = require("node:test");
 const assert = require("node:assert/strict");
 const path = require("node:path");
@@ -79,30 +80,38 @@ test("首页开始 → Phase 0 → 回答 → 示例反馈 → 下一题 → 重
   const page = mount("training", { sid: s.sessionId });
   assert.equal(page.data.session.phase, "phase0");
   page.begin();
-  page.input({ detail: { value: "I have been learning to cook." } });
+  page.input({
+    detail: {
+      value: answerInput(s.sessionId, "I have been learning to cook."),
+    },
+  });
   await page.submit();
   assert.equal(page.data.session.answers.length, 1);
   assert.equal(page.data.feedback.mode, "demo");
   page.next();
-  assert.equal(page.data.session.itemIndex, 1);
+  assert.equal(page.data.session.level, "L2");
+  assert.equal(page.data.session.itemIndex, 0);
   page.input({ detail: { value: "Unfinished answer" } });
   storage.resetCache();
   const resumed = mount("training", { sid: s.sessionId });
   assert.equal(resumed.data.input, "Unfinished answer");
-  assert.equal(resumed.data.session.itemIndex, 1);
+  assert.equal(resumed.data.session.level, "L2");
+  assert.equal(resumed.data.session.itemIndex, 0);
 });
 test("页面错误保留输入，连续点击提交只创建一条", async () => {
   const s = training.create("training", "A01");
   training.begin(s.sessionId);
   const page = mount("training", { sid: s.sessionId });
-  page.input({ detail: { value: "My answer" } });
+  page.input({ detail: { value: answerInput(s.sessionId, "My answer") } });
   await Promise.all([page.submit(), page.submit()]);
   assert.equal(training.get(s.sessionId).answers.length, 1);
   page.next();
-  page.input({ detail: { value: "keep this input" } });
+  page.input({
+    detail: { value: answerInput(s.sessionId, "keep this input") },
+  });
   savedFailure = true;
   await page.submit();
-  assert.equal(page.data.input, "keep this input");
+  assert.equal(page.data.input, answerInput(s.sessionId, "keep this input"));
   assert.match(page.data.error, /保存失败/);
   savedFailure = false;
   await page.submit();
@@ -227,4 +236,51 @@ test("首页自动调度复习使用 switchTab，无参数仍能精确恢复断�
   const resumed = mount("review");
   assert.equal(resumed.data.input, "Unfinished recall");
   assert.equal(resumed.data.session.revealed, false);
+});
+
+test("三个母句有槽位、中文例句和独立自检；自检不写训练记录", () => {
+  for (const mother of require("../data/motherSentences")) {
+    const page = mount("mother-lesson", { id: mother.id });
+    assert.equal(page.data.lesson.slots.length, 3);
+    assert.equal(page.data.examples.length, 3);
+    assert.ok(page.data.examples.every((e) => e.zh));
+    page.toggleDetails();
+    assert.equal(page.data.expanded, false);
+    const correct = page.data.lesson.check.options.find((o) => o.correct);
+    page.check({ currentTarget: { dataset: { id: correct.id } } });
+    assert.equal(page.data.checkResult.correct, true);
+    assert.equal(storage.load().sessions.length, 0);
+  }
+});
+
+test("训练页上一步保留 L2 草稿，Phase 0 可查看教学后返回原训练", async () => {
+  const s = training.create("training", "E02"),
+    page = mount("training", { sid: s.sessionId });
+  page.explain();
+  assert.ok(routes.at(-1).includes("from=training"));
+  const lesson = mount("mother-detail", { id: "E02", from: "training" });
+  lesson.start();
+  assert.equal(routes.at(-1), "back");
+  page.begin();
+  page.input({
+    detail: { value: answerInput(s.sessionId, "My own sentence") },
+  });
+  await page.submit();
+  page.next();
+  page.input({ detail: { value: "Half finished translation" } });
+  page.previous();
+  assert.equal(page.data.session.level, "L1");
+  assert.ok(page.data.feedback);
+  page.next();
+  assert.equal(page.data.session.level, "L2");
+  assert.equal(page.data.input, "Half finished translation");
+});
+
+test("核心介绍提供独立详细学习入口，保留母句编号", () => {
+  const page = mount("mother-detail", { id: "E02" });
+  page.details();
+  assert.equal(routes.at(-1), "/pages/mother-lesson/mother-lesson?id=E02");
+  const detail = mount("mother-lesson", { id: "E02" });
+  assert.equal(detail.data.mother.id, "E02");
+  assert.ok(detail.data.lesson.slots.length);
 });

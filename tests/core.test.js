@@ -1,3 +1,6 @@
+const answerInput = require("./answer-helper");
+const submit = (sid, text, analyzer) =>
+  training.submit(sid, answerInput(sid, text), analyzer);
 const { test, beforeEach } = require("node:test");
 const assert = require("node:assert/strict");
 let persisted = {},
@@ -33,7 +36,7 @@ async function complete(mid) {
   let s = training.create("training", mid);
   training.begin(s.sessionId);
   while (!(s = training.get(s.sessionId)).completed) {
-    await training.submit(
+    await submit(
       s.sessionId,
       "My own real answer.",
       ai.analyzeTrainingResponse,
@@ -45,7 +48,8 @@ async function complete(mid) {
 test("三个母句完整 Phase 0、L1–L6、手动候选入库、重启与统计", async () => {
   for (const m of mothers) {
     const s = await complete(m.id);
-    assert.equal(s.answers.length, 27);
+    assert.equal(s.answers.length, 17);
+    assert.equal(training.answerCount(s), 27);
     assert.equal(s.candidates.length, bank.dedupe(s.candidates).length);
     assert.equal(storage.load().banks.expression.length, 0);
     assert.equal(
@@ -55,7 +59,7 @@ test("三个母句完整 Phase 0、L1–L6、手动候选入库、重启与统�
     assert.ok(
       s.answers.every(
         (a) =>
-          a.text === "My own real answer." &&
+          a.text.split("\n").every((line) => line === "My own real answer.") &&
           a.provenance === "user" &&
           a.userProduced === false,
       ),
@@ -78,12 +82,12 @@ test("三个母句完整 Phase 0、L1–L6、手动候选入库、重启与统�
   assert.equal(stats.get().days, 1);
 });
 test("精确恢复 L2 第 3 题、L4 具体化节点及尚未推进的反馈", async () => {
-  let s = training.create("training", "A01");
+  let s = training.create("training", "A01", { batchTasks: {} });
   training.begin(s.sessionId);
   while (true) {
     s = training.get(s.sessionId);
     if (s.level === "L2" && s.itemIndex === 2) break;
-    await training.submit(s.sessionId, "An answer", ai.analyzeTrainingResponse);
+    await submit(s.sessionId, "An answer", ai.analyzeTrainingResponse);
     training.advance(s.sessionId);
   }
   training.saveDraft(s.sessionId, "unfinished draft");
@@ -94,16 +98,12 @@ test("精确恢复 L2 第 3 题、L4 具体化节点及尚未推进的反馈", a
   while (true) {
     s = training.get(s.sessionId);
     if (s.level === "L4" && s.itemIndex === 2) break;
-    await training.submit(s.sessionId, "My input", ai.analyzeTrainingResponse);
+    await submit(s.sessionId, "My input", ai.analyzeTrainingResponse);
     training.advance(s.sessionId);
   }
   assert.equal(s.logicNodeIndex, 2);
   assert.equal(training.task(s).map[2].active, true);
-  await training.submit(
-    s.sessionId,
-    "saved answer",
-    ai.analyzeTrainingResponse,
-  );
+  await submit(s.sessionId, "saved answer", ai.analyzeTrainingResponse);
   storage.resetCache();
   s = scheduler.next().session;
   assert.equal(s.logicNodeIndex, 2);
@@ -115,7 +115,7 @@ test("并发和连续重复提交只保存一条，AI 失败后可重试且输�
   training.begin(s.sessionId);
   training.saveDraft(s.sessionId, "kept draft");
   let resolve;
-  const pending = training.submit(
+  const pending = submit(
     s.sessionId,
     "Answer",
     () =>
@@ -123,10 +123,10 @@ test("并发和连续重复提交只保存一条，AI 失败后可重试且输�
         resolve = r;
       }),
   );
-  await training.submit(s.sessionId, "Answer", ai.analyzeTrainingResponse);
+  await submit(s.sessionId, "Answer", ai.analyzeTrainingResponse);
   resolve(await ai.analyzeTrainingResponse({ reference: "Reference" }));
   await pending;
-  await training.submit(s.sessionId, "Answer", ai.analyzeTrainingResponse);
+  await submit(s.sessionId, "Answer", ai.analyzeTrainingResponse);
   assert.equal(training.get(s.sessionId).answers.length, 1);
   training.advance(s.sessionId);
   training.saveDraft(s.sessionId, "kept on failure");
@@ -137,20 +137,14 @@ test("并发和连续重复提交只保存一条，AI 失败后可重试且输�
   );
   assert.equal(training.get(s.sessionId).draft, "kept on failure");
   assert.equal(training.get(s.sessionId).answers.length, 1);
-  await training.submit(
-    s.sessionId,
-    "kept on failure",
-    ai.analyzeTrainingResponse,
-  );
+  await submit(s.sessionId, "kept on failure", ai.analyzeTrainingResponse);
   assert.equal(training.get(s.sessionId).answers.length, 2);
 });
 test("空输入、空格与超长输入拒绝且不保存回答", async () => {
   const s = training.create("training", "E03");
   training.begin(s.sessionId);
   for (const text of ["", "   ", "x".repeat(config.inputMaxLength + 1)])
-    await assert.rejects(
-      training.submit(s.sessionId, text, ai.analyzeTrainingResponse),
-    );
+    await assert.rejects(submit(s.sessionId, text, ai.analyzeTrainingResponse));
   assert.equal(training.get(s.sessionId).answers.length, 0);
 });
 test("保存异常保持存储与 Session 原状，重试后成功", async () => {
@@ -159,26 +153,26 @@ test("保存异常保持存储与 Session 原状，重试后成功", async () =>
   training.saveDraft(s.sessionId, "keep me");
   writeFail = true;
   await assert.rejects(
-    training.submit(s.sessionId, "keep me", ai.analyzeTrainingResponse),
+    submit(s.sessionId, "keep me", ai.analyzeTrainingResponse),
     /保存失败/,
   );
   assert.equal(training.get(s.sessionId).answers.length, 0);
   assert.equal(training.get(s.sessionId).draft, "keep me");
   writeFail = false;
-  await training.submit(s.sessionId, "keep me", ai.analyzeTrainingResponse);
+  await submit(s.sessionId, "keep me", ai.analyzeTrainingResponse);
   assert.equal(training.get(s.sessionId).answers.length, 1);
 });
 test("调度优先断点 > 最早到期 > Quick Recall > 新母句，完成后不伪造内容", async () => {
   let s = await complete("A01");
   assert.equal(scheduler.next().session.sessionType, "quick");
   s = storage.load().sessions.at(-1);
-  await training.submit(s.sessionId, "My recall", ai.analyzeTrainingResponse);
+  await submit(s.sessionId, "My recall", ai.analyzeTrainingResponse);
   training.advance(s.sessionId);
   assert.equal(scheduler.next().session.motherSentenceId, "E02");
   s = storage.load().sessions.at(-1);
   training.begin(s.sessionId);
   while (!(s = training.get(s.sessionId)).completed) {
-    await training.submit(s.sessionId, "An answer", ai.analyzeTrainingResponse);
+    await submit(s.sessionId, "An answer", ai.analyzeTrainingResponse);
     training.advance(s.sessionId);
   }
   storage.transact((d) => {
@@ -270,7 +264,8 @@ test("备份完整往返、恢复校验、缺失字段默认填充、未来版�
   storage.clear();
   assert.equal(storage.load().sessions.length, 0);
   storage.restore(backup);
-  assert.equal(storage.load().sessions[0].answers.length, 27);
+  assert.equal(storage.load().sessions[0].answers.length, 17);
+  assert.equal(training.answerCount(storage.load().sessions[0]), 27);
   for (const bad of [
     "{",
     "{}",
@@ -312,11 +307,7 @@ test("备份完整往返、恢复校验、缺失字段默认填充、未来版�
 test("自由表达和 Quick Recall 使用独立 AI 层，示例不判定任务正确与语言错误", async () => {
   const topic = require("../data/freeTopics")[0];
   const s = training.create("free", "", { topic });
-  await training.submit(
-    s.sessionId,
-    "This is my real input",
-    ai.analyzeFreeExpression,
-  );
+  await submit(s.sessionId, "This is my real input", ai.analyzeFreeExpression);
   const result = training.get(s.sessionId);
   assert.equal(result.feedback.overallFeedback.isOnTask, null);
   assert.equal(result.feedback.languageIssues.length, 0);
@@ -404,7 +395,7 @@ test("真实 AI 接口未配置、请求失败或返回异常时拒绝，输入�
     training.begin(s.sessionId);
     training.saveDraft(s.sessionId, "kept input");
     await assert.rejects(
-      training.submit(s.sessionId, "kept input", real.analyzeTrainingResponse),
+      submit(s.sessionId, "kept input", real.analyzeTrainingResponse),
       /network/,
     );
     assert.equal(training.get(s.sessionId).draft, "kept input");
@@ -418,4 +409,154 @@ test("真实 AI 接口未配置、请求失败或返回异常时拒绝，输入�
     appConfig.cloudEnv = previous;
     delete wx.cloud;
   }
+});
+
+test("L1 六句一次提交、L2 六条中文一次显示，少行拒绝且保持原输入", async () => {
+  const s = training.create("training", "E02");
+  training.begin(s.sessionId);
+  assert.equal(training.task(training.get(s.sessionId)).batchCount, 6);
+  await assert.rejects(
+    training.submit(s.sessionId, "Only one line.", ai.analyzeTrainingResponse),
+    /共填写 6 行/,
+  );
+  assert.equal(training.get(s.sessionId).answers.length, 0);
+  const lines = Array.from(
+    { length: 6 },
+    (_, i) => `This is my own sentence ${i + 1}.`,
+  );
+  await training.submit(
+    s.sessionId,
+    lines.join("\n"),
+    ai.analyzeTrainingResponse,
+  );
+  assert.deepEqual(training.get(s.sessionId).answers[0].sentences, lines);
+  assert.equal(stats.get().answers, 6);
+  training.advance(s.sessionId);
+  const l2 = training.get(s.sessionId),
+    task = training.task(l2);
+  assert.equal(l2.level, "L2");
+  assert.equal(task.prompts.length, 6);
+  assert.equal(
+    task.prompts[0].text,
+    mothers.find((m) => m.id === "E02").l2[0][0],
+  );
+  assert.ok(!JSON.stringify(task.prompts).includes("allows"));
+  await training.submit(
+    s.sessionId,
+    lines.join("\n"),
+    ai.analyzeTrainingResponse,
+  );
+  training.advance(s.sessionId);
+  assert.equal(training.get(s.sessionId).level, "L3");
+  assert.equal(stats.get().answers, 12);
+});
+
+test("旧 L1/L2 未完成训练只合并剩余题，回答、草稿与待查看反馈都保留", async () => {
+  const s = training.create("training", "A01", { batchTasks: {} });
+  training.begin(s.sessionId);
+  for (let i = 0; i < 2; i++) {
+    await training.submit(
+      s.sessionId,
+      "Legacy answer " + i,
+      ai.analyzeTrainingResponse,
+    );
+    training.advance(s.sessionId);
+  }
+  training.saveDraft(s.sessionId, "Legacy unfinished draft");
+  training.prepareBatch(s.sessionId);
+  assert.equal(training.task(training.get(s.sessionId)).batchCount, 4);
+  assert.equal(training.get(s.sessionId).draft, "Legacy unfinished draft");
+  assert.equal(training.get(s.sessionId).answers.length, 2);
+  await training.submit(
+    s.sessionId,
+    Array.from({ length: 4 }, (_, i) => "Remaining " + i).join("\n"),
+    ai.analyzeTrainingResponse,
+  );
+  training.advance(s.sessionId);
+  assert.equal(training.get(s.sessionId).level, "L2");
+  training.prepareBatch(s.sessionId);
+  assert.equal(training.task(training.get(s.sessionId)).prompts.length, 6);
+  const l2lines = Array.from({ length: 6 }, (_, i) => "Translation " + i).join(
+    "\n",
+  );
+  await training.submit(s.sessionId, l2lines, ai.analyzeTrainingResponse);
+  const before = training.get(s.sessionId);
+  training.prepareBatch(s.sessionId);
+  assert.deepEqual(training.get(s.sessionId), before);
+  storage.resetCache();
+  assert.equal(training.get(s.sessionId).draft, l2lines);
+  assert.ok(training.get(s.sessionId).feedback);
+});
+
+test("上一步跨阶段回看保存的反馈，不重复统计，当前未提交草稿可恢复", async () => {
+  const s = training.create("training", "E03");
+  training.begin(s.sessionId);
+  for (const level of ["L1", "L2"]) {
+    await submit(s.sessionId, "A real line.", ai.analyzeTrainingResponse);
+    training.advance(s.sessionId);
+  }
+  await submit(s.sessionId, "First variation", ai.analyzeTrainingResponse);
+  training.advance(s.sessionId);
+  training.saveDraft(s.sessionId, "Unfinished second variation");
+  const before = stats.get();
+  training.back(s.sessionId);
+  let previous = training.get(s.sessionId);
+  assert.equal(previous.level, "L3");
+  assert.equal(previous.itemIndex, 0);
+  assert.equal(previous.draft, "First variation");
+  assert.ok(previous.feedback);
+  training.back(s.sessionId);
+  previous = training.get(s.sessionId);
+  assert.equal(previous.level, "L2");
+  assert.equal(previous.answers.length, 3);
+  assert.ok(previous.feedback);
+  assert.equal(stats.get().answers, before.answers);
+  assert.equal(stats.get().stages, before.stages);
+  storage.resetCache();
+  assert.equal(training.get(s.sessionId).level, "L2");
+  training.advance(s.sessionId);
+  training.advance(s.sessionId);
+  const resumed = training.get(s.sessionId);
+  assert.equal(resumed.level, "L3");
+  assert.equal(resumed.itemIndex, 1);
+  assert.equal(resumed.draft, "Unfinished second variation");
+  assert.equal(resumed.feedback, null);
+  assert.equal(stats.get().answers, before.answers);
+});
+
+test("L6 两个话题：30 秒到 60 秒保留原段，新话题无提示且上一步可恢复", async () => {
+  const s = training.create("training", "E02", {
+    phase: "training",
+    level: "L6",
+  });
+  let task = training.task(training.get(s.sessionId));
+  assert.match(task.progressLabel, /30 秒/);
+  assert.equal(task.map.length, 2);
+  assert.equal(task.previousText, "");
+  await training.submit(
+    s.sessionId,
+    "My original thirty-second paragraph.",
+    ai.analyzeTrainingResponse,
+  );
+  training.advance(s.sessionId);
+  task = training.task(training.get(s.sessionId));
+  assert.match(task.instruction, /60 秒/);
+  assert.equal(task.map.length, 4);
+  assert.equal(task.previousText, "My original thirty-second paragraph.");
+  await training.submit(
+    s.sessionId,
+    "My expanded full paragraph.",
+    ai.analyzeTrainingResponse,
+  );
+  training.advance(s.sessionId);
+  task = training.task(training.get(s.sessionId));
+  assert.equal(task.topic, "Topic 2");
+  assert.equal(task.map.length, 0);
+  assert.equal(task.hint, "");
+  assert.equal(task.instruction, "");
+  assert.equal(task.previousText, "");
+  assert.equal(task.helpers.length, 0);
+  training.back(s.sessionId);
+  assert.equal(training.get(s.sessionId).draft, "My expanded full paragraph.");
+  assert.match(training.task(training.get(s.sessionId)).progressLabel, /60 秒/);
 });
