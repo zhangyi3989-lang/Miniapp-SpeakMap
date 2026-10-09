@@ -608,3 +608,14 @@ test("首页路径预览只读，顺序为断点、到期轮次、新母句；�
   assert.equal(JSON.stringify(storage.load()), before);
   assert.equal(scheduler.next().session.sessionId, s.sessionId);
 });
+
+test("路径列表同名学习库复习使用稳定唯一编号，到期及未来列表均不重名键", () => {
+ bank.add(Array.from({length:4},(_,i)=>({bankType:'expression',provenance:'demo_reference',data:{expression:'Unique phrase '+i,meaningZh:'测试表达'+i}})), 'fixture', '');
+ storage.transact(d=>{d.reviews.forEach((r,i)=>{r.nextReviewAt=i<2?'2020-01-01T00:00:00.000Z':'2099-01-01T00:00:00.000Z';});});
+ const first=scheduler.plan(),second=scheduler.plan();
+ for(const list of [first.steps,first.upcoming])assert.equal(new Set(list.map(x=>x.id)).size,list.length);
+ assert.equal(first.steps[0].title,first.steps[1].title);
+ assert.equal(first.upcoming[0].title,first.upcoming[1].title);
+ assert.deepEqual(first.steps.map(x=>x.id),second.steps.map(x=>x.id));
+ assert.deepEqual(first.upcoming.map(x=>x.id),second.upcoming.map(x=>x.id));
+});

@@ -66,13 +66,14 @@ function plan(now = Date.now()) {
           : "继续上次自由表达";
       detail = "先完成上次未结束的练习。";
     }
-    steps.push({ title, detail, kind: "current" });
+    steps.push({ id: "session:" + active.sessionId, title, detail, kind: "current" });
   }
   const due = reviews
     .dueItems(now)
     .filter((r) => !active || r.id !== active.reviewId);
   for (const r of due)
     steps.push({
+      id: "review:" + r.id,
       title: `${r.kind === "mother" ? "母句 " + r.sourceId : "学习库条目"} · R${r.stage + 1} 复习`,
       detail: "已到期 · 先回忆，再换场景表达。",
       kind: "review",
@@ -80,6 +81,7 @@ function plan(now = Date.now()) {
   if (config.quickRecall.enabled) {
     if (active && active.sessionType === "training")
       steps.push({
+        id: "recall:" + active.motherSentenceId,
         title: `母句 ${active.motherSentenceId} · 完成后的回忆检查`,
         detail:
           "首次训练完成后，若尚未做过正式复习，会先安排简短回忆，再进入新母句。",
@@ -101,6 +103,7 @@ function plan(now = Date.now()) {
         )
       ) {
         steps.push({
+          id: "recall:" + m.id,
           title: `母句 ${m.id} · 简短回忆检查`,
           detail: "检查刚完成的母句能否想起来，再进入新学习。",
           kind: "recall",
@@ -111,6 +114,7 @@ function plan(now = Date.now()) {
   const fresh = mothers.find((m) => !d.motherSentenceProgress[m.id]);
   if (fresh)
     steps.push({
+      id: "new:" + fresh.id,
       title: `新母句 ${fresh.id}`,
       detail: "完成前面的安排后，从核心介绍开始学习。",
       kind: "new",
@@ -119,6 +123,7 @@ function plan(now = Date.now()) {
     .filter((r) => !r.completed && Date.parse(r.nextReviewAt) > now)
     .sort((a, b) => Date.parse(a.nextReviewAt) - Date.parse(b.nextReviewAt))
     .map((r) => ({
+      id: "review:" + r.id,
       title: `${r.kind === "mother" ? "母句 " + r.sourceId : "学习库条目"} · R${r.stage + 1}`,
       detail: `约 ${Math.max(1, Math.ceil((Date.parse(r.nextReviewAt) - now) / 86400000))} 天后到期，届时自动安排。`,
     }));

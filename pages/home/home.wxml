@@ -9,10 +9,10 @@
   </view>
   <view class="card route-card">
     <view class="row"><view class="subtitle">接下来的学习</view><view class="small muted">按进度安排</view></view>
-    <view wx:for="{{upcomingSteps}}" wx:key="title" class="route-step"><view class="route-number {{item.kind}}">{{index+2}}</view><view class="grow"><view class="plan-title">{{item.title}}</view><view class="muted small">{{item.detail}}</view></view></view>
+    <view wx:for="{{upcomingSteps}}" wx:key="id" class="route-step"><view class="route-number {{item.kind}}">{{index+2}}</view><view class="grow"><view class="plan-title">{{item.title}}</view><view class="muted small">{{item.detail}}</view></view></view>
     <view wx:if="{{!upcomingSteps.length}}" class="muted small">暂无后续任务，完成当前练习后会重新检查安排。</view>
     <view wx:if="{{plan.upcoming.length}}" class="label">之后到期</view>
-    <view wx:for="{{plan.upcoming}}" wx:key="title" class="line"><view>{{item.title}}</view><view class="muted small">{{item.detail}}</view></view>
+    <view wx:for="{{plan.upcoming}}" wx:key="id" class="line"><view>{{item.title}}</view><view class="muted small">{{item.detail}}</view></view>
     <view class="small muted route-note">不用今天全部完成，下次从停下的位置继续。</view>
   </view>
   <view class="grid content-entries">
