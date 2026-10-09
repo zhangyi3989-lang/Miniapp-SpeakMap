@@ -430,3 +430,77 @@ module.exports = [
     },
   },
 ];
+
+// 保留已发布三个母句的任务，避免旧学习断点改变；其余母句以正式资料的双语例句组装示例练习。
+const catalog = require("./motherCatalog");
+for (const m of catalog) {
+  if (module.exports.some((x) => x.id === m.id)) continue;
+  const pairs = m.pairs.slice(0, 6),
+    first = pairs[0].en;
+  module.exports.push({
+    id: m.id,
+    skeleton: m.skeleton,
+    meaning: m.meaning,
+    scenes: m.scenes,
+    examples: pairs.slice(0, 3).map((x) => x.en),
+    referenceMeanings: Object.fromEntries(m.pairs.map((x) => [x.en, x.zh])),
+    l1: ["生活", "学习", "工作", "兴趣", "习惯", "自由表达"].map(
+      (x) => `结合自己的${x}，用当前母句造句。`,
+    ),
+    l2: pairs.map((x) => [x.zh, x.en]),
+    l3: pairs
+      .slice(0, 5)
+      .map((x, i) => [
+        `${["换成另一个人物", "换一个时间或场景", "改用不同的动作或内容", "换一个原因或条件", "用这个结构提一个问题"][i]}：${x.zh}`,
+        x.en,
+      ]),
+    chain: [
+      ["核心表达", "用当前母句说一个自己的生活细节。", "F1", first],
+      [
+        "原因解释",
+        "接着解释为什么。",
+        "F2",
+        "That’s mainly because it matters to me.",
+      ],
+      ["具体化", "补充一个具体的经历或例子。", "F3", pairs[1].en],
+      ["对比", "对比另一个情况，再说明你的看法。", "F5", pairs[2].en],
+      [
+        "结果",
+        "最后说明对你的影响。",
+        "F8",
+        "As a result, it makes a difference in my daily life.",
+      ],
+    ],
+    links: [
+      ["在生活中什么时候会用到这个表达？再用一个学过的母句补充原因。", first],
+      ["换一个工作或学习的场景，结合两个学过的母句回答。", pairs[1].en],
+    ],
+    topics: [
+      [
+        "结合自己的生活，谈谈你最近关注的一件事。",
+        "What is something you have been thinking about in your daily life?",
+        "观点 → 原因 → 例子 → 影响",
+        first,
+      ],
+      [
+        "如果朋友向你寻求建议，你会分享什么经历？",
+        "What experience would you share with a friend who asks for advice?",
+        "",
+        pairs[2].en,
+      ],
+    ],
+    review: [
+      m.meaning,
+      "换一个人物或场景，用自己的内容表达。",
+      "围绕这个意思继续说约30秒。",
+      "换个场景说约60秒，补充原因和例子。",
+      "独立回答一个生活话题，尝试主动调用这个表达。",
+    ],
+    exerciseSource: "根据资料例句组装的示例练习；不代表资料中的完整训练设计",
+  });
+}
+module.exports.sort(
+  (a, b) =>
+    catalog.find((x) => x.id === a.id).order -
+    catalog.find((x) => x.id === b.id).order,
+);

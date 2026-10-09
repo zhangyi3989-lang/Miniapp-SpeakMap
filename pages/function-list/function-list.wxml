@@ -6,6 +6,9 @@
     <view class="badge">{{item.id}}</view>
     <view class="subtitle">{{item.name}}</view>
     <view class="muted">什么时候用：{{item.action}}</view>
-    <view wx:for="{{item.expressions}}" wx:for-item="expression" wx:key="*this" class="line english">{{expression}}</view>
+    <view class="label">主动掌握</view>
+    <view wx:for="{{item.primary}}" wx:for-item="expression" wx:key="*this" class="line english">{{expression}}</view>
+    <view wx:if="{{item.supporting.length}}" class="label">辅助 / 认识即可</view>
+    <view wx:for="{{item.supporting}}" wx:for-item="expression" wx:key="*this" class="line">{{expression}}</view>
   </view>
 </view>

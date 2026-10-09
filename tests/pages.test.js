@@ -244,17 +244,14 @@ test("首页自动调度复习使用 switchTab，无参数仍能精确恢复断�
   assert.equal(resumed.data.session.revealed, false);
 });
 
-test("三个母句有槽位、中文例句和独立自检；自检不写训练记录", () => {
-  for (const mother of require("../data/motherSentences")) {
+test("34个母句详细资料完整展示，阅读不改变训练进度", () => {
+  const catalog = require("../data/motherCatalog");
+  assert.equal(catalog.length, 34);
+  for (const mother of catalog) {
     const page = mount("mother-lesson", { id: mother.id });
-    assert.equal(page.data.lesson.slots.length, 3);
-    assert.equal(page.data.examples.length, 3);
+    assert.equal(page.data.mother.id, mother.id);
+    assert.ok(page.data.blocks.length > 80);
     assert.ok(page.data.examples.every((e) => e.zh));
-    page.toggleDetails();
-    assert.equal(page.data.expanded, false);
-    const correct = page.data.lesson.check.options.find((o) => o.correct);
-    page.check({ currentTarget: { dataset: { id: correct.id } } });
-    assert.equal(page.data.checkResult.correct, true);
     assert.equal(storage.load().sessions.length, 0);
   }
 });
@@ -288,5 +285,27 @@ test("核心介绍提供独立详细学习入口，保留母句编号", () => {
   assert.equal(routes.at(-1), "/pages/mother-lesson/mother-lesson?id=E02");
   const detail = mount("mother-lesson", { id: "E02" });
   assert.equal(detail.data.mother.id, "E02");
-  assert.ok(detail.data.lesson.slots.length);
+  assert.ok(detail.data.blocks.length > 80);
+});
+
+test("正式资料34个编号顺序正确，功能表达包含主动与辅助分类，C首页显示选定文案", () => {
+  const catalog = require("../data/motherCatalog"),
+    fs = require("node:fs");
+  assert.equal(new Set(catalog.map((m) => m.id)).size, 34);
+  assert.ok(catalog.every((m, i) => i === 0 || m.order > catalog[i - 1].order));
+  assert.equal(catalog[0].id, "A01");
+  assert.equal(catalog[1].id, "A02");
+  const functions = mount("function-list");
+  assert.equal(functions.data.items.length, 12);
+  assert.ok(
+    functions.data.items.every(
+      (f) => f.primary.length > 0 && Array.isArray(f.supporting),
+    ),
+  );
+  assert.match(
+    fs.readFileSync(path.resolve(__dirname, "../pages/home/home.wxml"), "utf8"),
+    /每一次学习都是靠近更好的你/,
+  );
+  const home = mount("home");
+  assert.equal(home.data.current.title, home.data.plan.steps[0].title);
 });

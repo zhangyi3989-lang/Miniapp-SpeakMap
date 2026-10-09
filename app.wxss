@@ -7,16 +7,7 @@ page {
   line-height: 1.65;
 }
 .page {
-  position: relative;
-  box-sizing: border-box;
-  padding: 30rpx 30rpx 42rpx;
-  max-width: 900rpx;
-  margin: 22rpx 20rpx 36rpx;
-  background: #fffefb;
-  border-radius: 36rpx;
-  box-shadow:
-    0 6rpx 0 #edc5a2,
-    0 12rpx 28rpx rgba(130, 74, 37, 0.06);
+  box-sizing:border-box;padding:30rpx 28rpx 44rpx;max-width:900rpx;margin:0 auto;
 }
 .eyebrow {
   color: #728a7b;
@@ -389,3 +380,18 @@ checkbox {
 .candidate > view {
   margin-left: 10rpx;
 }
+
+/* C 方案：轻量卡片，不使用整页纸张或装订装饰。 */
+page {background:#fff7ee;color:#24465c;background-image:linear-gradient(180deg,#ffe1c5 0,#fff7ee 520rpx);}
+.title {color:#24465c;font-weight:750;letter-spacing:0;}
+.marker {background:none;padding:0;}
+.card {background:#fff;border:1rpx solid #f4eee5;box-shadow:0 8rpx 26rpx rgba(91,71,45,.04);border-radius:28rpx;padding:28rpx;margin:22rpx 0;}
+.hero {background:#ffe7cf;border-color:#fff;}
+.green {background:#edf5e8;border-color:#e5f0dd;}
+.blue {background:#f2f7fc;border-color:#eaf0f5;}
+.pink {background:#fff0ee;border-color:#f9e6e2;}
+button {border-radius:50rpx;box-shadow:none;font-weight:650;}
+button.primary {background:linear-gradient(180deg,#67aa6c,#52935d);border:0;box-shadow:0 6rpx 16rpx rgba(66,126,75,.12);}
+button.secondary {background:#edf3ed;color:#42764d;box-shadow:none;}
+.badge {border-radius:10rpx;font-size:21rpx;font-weight:600;background:#e9f3dd;}
+.subtitle {font-weight:700;}

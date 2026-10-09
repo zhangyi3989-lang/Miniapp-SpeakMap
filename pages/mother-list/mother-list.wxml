@@ -1,7 +1,7 @@
 <view class="page"><brand-header section="母句"/>
   <view class="eyebrow">YOUR LANGUAGE MAP</view>
   <view class="title"><text class="marker">34个母句</text></view>
-  <view class="muted">先理解核心意思，再主动调取。当前已收录3个母句，完整34个内容待补充。</view>
+  <view class="muted">34个母句 · 按学习顺序排列，点击查看核心介绍与详细资料。</view>
   <view wx:for="{{items}}" wx:key="id" class="card" bindtap="open" data-id="{{item.id}}">
     <view class="row">
       <view class="badge">{{item.id}}</view>

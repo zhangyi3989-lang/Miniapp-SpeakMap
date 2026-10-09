@@ -1,9 +1,10 @@
 const mothers = require("../../data/motherSentences");
+const catalog = require("../../data/motherCatalog");
 const storage = require("../../services/storage");
 const training = require("../../services/trainingService");
 const ui = require("../../utils/page");
 Page({
-  data: { expanded: false, selected: "", checkResult: null },
+  data: {},
   onLoad(q) {
     this.mid = q.id;
     this.fromTraining = q.from === "training";
@@ -15,15 +16,13 @@ Page({
       return;
     }
     this.setData({
-      mother: m,
-      lesson: require("../../data/motherLessons")[m.id] || null,
-      examples: m.examples.map((en, i) => ({
-        en,
-        zh: m.referenceMeanings[en] || "",
-        note:
-          (require("../../data/motherLessons")[m.id] || { exampleNotes: [] })
-            .exampleNotes[i] || "",
-      })),
+      mother: Object.assign(
+        {},
+        m,
+        catalog.find((x) => x.id === m.id),
+      ),
+      blocks: (catalog.find((x) => x.id === m.id) || {}).blocks || [],
+      examples: (catalog.find((x) => x.id === m.id).pairs || []).slice(0, 3),
       progress: storage.load().motherSentenceProgress[this.mid] || null,
     });
   },
@@ -34,15 +33,6 @@ Page({
         this.mid +
         (this.fromTraining ? "&from=training" : ""),
     });
-  },
-  toggleDetails() {
-    this.setData({ expanded: !this.data.expanded });
-  },
-  check(e) {
-    const option = this.data.lesson.check.options.find(
-      (o) => o.id === e.currentTarget.dataset.id,
-    );
-    if (option) this.setData({ selected: option.id, checkResult: option });
   },
   start() {
     ui.guard(() => {
@@ -57,7 +47,7 @@ Page({
         return;
       }
       if (d.motherSentenceProgress[this.mid]) {
-        wx.switchTab({ url: "/pages/review/review" });
+        ui.today();
         return;
       }
       ui.goSession(training.create("training", this.mid));

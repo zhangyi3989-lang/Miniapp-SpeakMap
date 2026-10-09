@@ -1,58 +1,24 @@
-<view class="page">
+<view class="page home-page">
   <brand-header section="首页"/>
-  <view class="eyebrow">每天一点，真正用出来</view>
-  <view class="title home-title">
-    <view>
-      <text class="marker">把学过的英语，</text>
-    </view>
-    <view>
-      <text class="marker">真正调出来。</text>
-    </view>
+  <view class="home-welcome"><view class="grow"><view class="welcome-title">今天，继续向前</view><view class="muted">每一次学习都是靠近更好的你</view></view><brand-mascot compact="{{true}}"/></view>
+  <view class="card current-card">
+    <view class="badge">当前学习</view>
+    <view class="current-title">{{current.title}}</view>
+    <view class="muted">{{current.detail}}</view>
+    <button class="primary" bindtap="start">开始今天的学习 →</button>
   </view>
-  <view class="muted lead">想到意思，就能说出自己的话。</view>
-  <view class="card hero">
-    <view class="row">
-      <view class="grow">
-        <view class="subtitle">今天，从这里继续</view>
-        <view class="muted">从上次停下的位置继续。<view>完成后，自动安排复习或新母句。</view>
-        </view>
-      </view>
-      <brand-mascot compact="{{true}}"/>
-    </view>
-    <button class="primary" bindtap="start">开始今天的学习 <text class="button-arrow">→</text>
-    </button>
-    <view class="small muted center">今天练 5 分钟，也是在往前走。</view>
-  </view>
-  <view wx:if="{{demo}}" class="demo">
-    <text class="demo-dot">●</text> 当前为示例模式 · 文字训练<view class="small">反馈用于演示流程，并非对输入的真实分析。</view>
-  </view>
-  <view class="card blue">
-    <view class="subtitle">接下来的学习安排</view>
-    <view wx:for="{{plan.steps}}" wx:key="title" class="plan-step">
-      <view class="badge">{{index + 1}}</view>
-      <view class="grow"><view class="plan-title">{{item.title}}</view><view class="muted small">{{item.detail}}</view></view>
-    </view>
-    <view wx:if="{{!plan.steps.length}}" class="muted">当前没有待完成任务，可以自由表达或浏览学习库。</view>
-    <view wx:if="{{plan.upcoming.length}}" class="label">之后到期的复习</view>
+  <view class="card route-card">
+    <view class="row"><view class="subtitle">接下来的学习</view><view class="small muted">按进度安排</view></view>
+    <view wx:for="{{upcomingSteps}}" wx:key="title" class="route-step"><view class="route-number {{item.kind}}">{{index+2}}</view><view class="grow"><view class="plan-title">{{item.title}}</view><view class="muted small">{{item.detail}}</view></view></view>
+    <view wx:if="{{!upcomingSteps.length}}" class="muted small">暂无后续任务，完成当前练习后会重新检查安排。</view>
+    <view wx:if="{{plan.upcoming.length}}" class="label">之后到期</view>
     <view wx:for="{{plan.upcoming}}" wx:key="title" class="line"><view>{{item.title}}</view><view class="muted small">{{item.detail}}</view></view>
-    <view class="muted small plan-note">不用今天全部完成。每次从停下的位置继续；安排会随学习进度和复习结果更新。</view>
+    <view class="small muted route-note">不用今天全部完成，下次从停下的位置继续。</view>
   </view>
-  <view class="section-title">
-    <text class="marker">把一句，练成一段</text>
+  <view class="grid content-entries">
+    <view class="entry-card resource-mothers" bindtap="mothers"><view class="resource-icon">句</view><view class="subtitle">34个母句 →</view><view class="small muted">核心介绍与详细学习</view></view>
+    <view class="entry-card resource-functions" bindtap="functions"><view class="resource-icon">···</view><view class="subtitle">12个功能表达 →</view><view class="small muted">把一句自然接成一段</view></view>
   </view>
-  <view class="grid">
-    <view class="entry-card blue" bindtap="mothers">
-      <view class="mini-icon blue-icon">句</view>
-      <view class="subtitle">34个母句 ↗</view>
-      <view class="muted">从理解到自己说出来</view>
-      <view class="small muted">已收录3个 · 其余待补充</view>
-    </view>
-    <view class="entry-card pink" bindtap="functions">
-      <view class="mini-icon pink-icon">…</view>
-      <view class="subtitle">12个功能表达 ↗</view>
-      <view class="muted">把一句话自然接成一段</view>
-      <view class="small muted">查看用途与表达示例</view>
-    </view>
-  </view>
+  <view wx:if="{{demo}}" class="demo small">当前为示例模式 · 暂用文字作答，语音尚未接入。反馈用于演示流程。</view>
   <view class="footnote">学习数据仅保存在当前设备</view>
 </view>

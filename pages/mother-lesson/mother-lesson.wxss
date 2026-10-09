@@ -1,64 +1,38 @@
-.lesson-note {
-  font-size: 26rpx;
-  margin-top: 16rpx;
+.lesson-content {
+  background: #fff;
+  padding: 30rpx;
+  border-radius: 28rpx;
+  margin-top: 28rpx;
+}
+.lesson-block {
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 16rpx 0;
   line-height: 1.8;
 }
-.slot-card {
-  padding: 20rpx;
-  border-radius: 22rpx;
-  margin: 12rpx 0;
+.lesson-h1 {
+  font-size: 36rpx;
+  font-weight: 750;
 }
-.slot-number {
-  width: 44rpx;
-  height: 44rpx;
-  line-height: 44rpx;
-  text-align: center;
-  background: #fffefa;
-  border-radius: 50%;
-  font-weight: 800;
-  color: #3d7950;
-  flex-shrink: 0;
+.lesson-h2 {
+  font-size: 32rpx;
+  font-weight: 750;
+  padding-top: 28rpx;
+  color: #28704e;
 }
-.slot-card .subtitle {
-  font-size: 27rpx;
-  margin-bottom: 4rpx;
-}
-.slot-card .english {
-  font-size: 30rpx;
-}
-.thought {
-  background: #fffefb;
-  padding: 14rpx 18rpx;
-  border-radius: 15rpx;
+.lesson-h3 {
+  font-size: 28rpx;
   font-weight: 700;
+  padding-top: 14rpx;
 }
-.worked {
-  margin-top: 22rpx;
+.lesson-quote {
+  background: #f2f7ec;
+  border-left: 5rpx solid #86b780;
+  padding: 16rpx 20rpx;
+  border-radius: 12rpx;
 }
-.translation {
-  margin: 8rpx 0 16rpx;
-  font-size: 27rpx;
-  color: #4d6e66;
-}
-.wrong {
-  color: #a05248;
-  margin-bottom: 10rpx;
-  font-size: 25rpx;
-}
-.check-option {
-  background: #fffefa;
-  color: #174764;
-  border: 2rpx solid #e8debf;
-  box-shadow: none;
-  text-align: left;
-  font-size: 26rpx;
-  font-weight: 500;
-}
-.check-option.chosen {
-  border-color: #409353;
-  background: #edf8e5;
-}
-.check-explanation {
-  padding-top: 18rpx;
-  border-top: 2rpx dashed #dfcd8c;
+.lesson-rule {
+  height: 1rpx;
+  background: #eceee8;
+  margin: 28rpx 0;
 }

@@ -1,65 +1,30 @@
-.heading {
-  position: relative;
-  padding-bottom: 24rpx;
-}
-.binding {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 16rpx;
-  margin: -8rpx 0 34rpx;
-}
-.binding view {
-  width: 28rpx;
-  height: 28rpx;
-  background: #ffdbb8;
-  box-shadow: inset 0 4rpx 3rpx rgba(133, 80, 35, 0.18);
-}
-.tape {
-  position: absolute;
-  top: -30rpx;
-  right: -38rpx;
-  width: 150rpx;
-  height: 48rpx;
-  background: rgba(241, 184, 112, 0.3);
-  transform: rotate(17deg);
-  pointer-events: none;
-}
 .heading-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 28rpx;
 }
 .wordmark {
   display: flex;
   align-items: center;
-  min-width: 0;
 }
 .seal {
-  color: #b98753;
-  border: 3rpx solid #b98753;
+  width: 40rpx;
+  height: 40rpx;
   border-radius: 14rpx;
-  width: 34rpx;
-  height: 34rpx;
-  font-size: 25rpx;
-  line-height: 34rpx;
+  background: #529865;
+  color: #fff;
   text-align: center;
-  transform: rotate(-8deg);
+  line-height: 40rpx;
   margin-right: 12rpx;
+  font-weight: 800;
 }
 .wordmark-text {
-  font-size: 35rpx;
+  font-size: 34rpx;
   font-weight: 800;
-  color: #171b17;
-  background: linear-gradient(transparent 68%, #ffda58 68%);
-  line-height: 1.35;
+  color: #24465c;
 }
 .section {
-  flex-shrink: 0;
-  margin-left: 12rpx;
-  padding: 5rpx 14rpx;
-  border-radius: 16rpx;
-  background: #e1f2cc;
-  color: #285634;
+  color: #72917f;
   font-size: 22rpx;
-  font-weight: 700;
 }

@@ -45,7 +45,7 @@ async function complete(mid) {
   }
   return training.get(s.sessionId);
 }
-test("三个母句完整 Phase 0、L1–L6、手动候选入库、重启与统计", async () => {
+test("34个母句完整 Phase 0、L1–L6、手动候选入库、重启与统计", async () => {
   for (const m of mothers) {
     const s = await complete(m.id);
     assert.equal(s.answers.length, 17);
@@ -76,9 +76,9 @@ test("三个母句完整 Phase 0、L1–L6、手动候选入库、重启与统�
   assert.equal(bank.add(selected, s.sessionId, "A01").duplicates, 2);
   storage.resetCache();
   assert.equal(storage.load().banks.expression.length, 2);
-  assert.equal(stats.get().answers, 81);
-  assert.equal(stats.get().completed, 3);
-  assert.equal(stats.get().stages, 18);
+  assert.equal(stats.get().answers, mothers.length * 27);
+  assert.equal(stats.get().completed, mothers.length);
+  assert.equal(stats.get().stages, mothers.length * 6);
   assert.equal(stats.get().days, 1);
 });
 test("精确恢复 L2 第 3 题、L4 具体化节点及尚未推进的反馈", async () => {
@@ -168,7 +168,7 @@ test("调度优先断点 > 最早到期 > Quick Recall > 新母句，完成后�
   s = storage.load().sessions.at(-1);
   await submit(s.sessionId, "My recall", ai.analyzeTrainingResponse);
   training.advance(s.sessionId);
-  assert.equal(scheduler.next().session.motherSentenceId, "E02");
+  assert.equal(scheduler.next().session.motherSentenceId, "A02");
   s = storage.load().sessions.at(-1);
   training.begin(s.sessionId);
   while (!(s = training.get(s.sessionId)).completed) {

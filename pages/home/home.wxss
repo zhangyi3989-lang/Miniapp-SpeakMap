@@ -1,14 +1,87 @@
-.plan-step {
+.home-welcome {
   display: flex;
-  gap: 20rpx;
+  align-items: center;
+  justify-content: space-between;
+  margin: 18rpx 0 20rpx;
+}
+.welcome-title {
+  font-size: 44rpx;
+  font-weight: 800;
+  line-height: 1.4;
+  margin-bottom: 12rpx;
+}
+.home-welcome .muted {
+  font-size: 23rpx;
+}
+.current-card {
+  background: linear-gradient(120deg, #fff4e8, #ffdec0);
+  border: 5rpx solid #fff;
+  padding: 30rpx;
+}
+.current-title {
+  font-size: 34rpx;
+  font-weight: 750;
+  margin: 16rpx 0 10rpx;
+}
+.current-card button {
+  margin-bottom: 4rpx;
+}
+.route-step {
+  display: flex;
   align-items: flex-start;
   padding: 24rpx 0;
-  border-bottom: 2rpx solid #dce8ed;
+  gap: 18rpx;
+  border-bottom: 1rpx solid #edf0ed;
+}
+.route-number {
+  flex-shrink: 0;
+  width: 46rpx;
+  height: 46rpx;
+  line-height: 46rpx;
+  text-align: center;
+  border-radius: 50%;
+  background: #ecf0f1;
+  color: #687b83;
+}
+.route-number.review {
+  background: #ffdfc5;
+  color: #aa673e;
+}
+.route-number.new {
+  background: #e4f1de;
+  color: #50825a;
 }
 .plan-title {
+  font-size: 27rpx;
   font-weight: 700;
-  margin-bottom: 8rpx;
+  margin-bottom: 6rpx;
 }
-.plan-note {
+.route-note {
   margin-top: 24rpx;
+}
+.content-entries {
+  margin-top: 24rpx;
+}
+.entry-card {
+  width: 48.5%;
+  border: 3rpx solid #fff;
+  min-height: 190rpx;
+}
+.resource-mothers {
+  background: #eaf4e3;
+}
+.resource-functions {
+  background: #fff1cf;
+}
+.resource-icon {
+  color: #529663;
+  font-size: 40rpx;
+  line-height: 1.1;
+}
+.resource-functions .resource-icon {
+  color: #c3902d;
+}
+.content-entries .subtitle {
+  font-size: 27rpx;
+  margin-top: 14rpx;
 }
