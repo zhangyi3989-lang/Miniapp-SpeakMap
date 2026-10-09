@@ -1,10 +1,10 @@
-<view class="page">
+<view class="page"><brand-header section="复习"/>
   <block wx:if="{{!session}}">
     <view class="eyebrow">RETRIEVAL FIRST</view>
-    <view class="title">先回忆，再看参考</view>
+    <view class="title"><text class="marker">先想起来，</text><view><text class="marker">再继续往下说。</text></view></view>
     <view class="muted">到期 {{dueCount}} 项。只记录练习行为和你的自评。</view>
     <button class="primary" bindtap="continue">继续任务 / 开始到期复习</button>
-    <view wx:if="{{!dueCount}}" class="card green">今天没有到期复习。</view>
+    <view wx:if="{{!dueCount}}" class="card green"><brand-mascot caption="今天没有到期复习。" compact="{{true}}"/></view>
     <view wx:for="{{items}}" wx:key="id" class="card" bindtap="open" data-id="{{item.id}}">
       <view class="row">
         <view class="badge">R{{item.stage+1}}</view>
@@ -21,7 +21,7 @@
   <block wx:else>
     <view class="badge">R{{stage+1}} / R5 · {{task.name}}</view>
     <view class="title">{{task.prompt}}</view>
-    <view class="muted">先自己想一想。当前没有参考答案。</view>
+    <view wx:if="{{!session.revealed}}" class="muted">先自己想一想，再查看参考。</view>
     <textarea
       value="{{input}}"
       maxlength="{{max}}"

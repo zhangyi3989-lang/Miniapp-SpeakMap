@@ -1,8 +1,8 @@
-<view class="page">
+<view class="page"><brand-header section="学习内容"/>
   <view wx:if="{{item}}">
     <view class="badge">{{item.provenance === 'demo_reference' ? '示例内容 · 不代表对你输入的分析' : '学习内容'}}</view>
     <block wx:if="{{!editing}}">
-      <view class="title">{{text}}</view>
+      <view class="title"><text class="marker">{{text}}</text></view>
       <view class="card">
         <view class="label">中文意思 / 区别</view>
         <view>{{meaning}}</view>

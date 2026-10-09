@@ -1,5 +1,5 @@
-<view class="page">
-  <view class="title">保管好你的学习记录</view>
+<view class="page"><brand-header section="数据管理"/>
+  <view class="title"><text class="marker">保管好你的学习记录</text></view>
   <view class="card green">
     <view>数据保存在当前设备。卸载或清理小程序可能导致丢失。</view>
     <view class="muted">复制 JSON 后，粘贴到你信任的笔记工具保存。备份包含你的原始回答，请妥善保管。</view>

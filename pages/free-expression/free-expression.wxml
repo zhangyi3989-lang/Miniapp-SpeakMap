@@ -1,6 +1,6 @@
-<view class="page">
+<view class="page"><brand-header section="自由表达"/>
   <view class="eyebrow">YOUR OWN VOICE</view>
-  <view class="title">自由表达</view>
+  <view class="title"><text class="marker">自由表达</text></view>
   <view class="muted">选一个话题，说你真正想说的。</view>
   <view class="muted">未完成任务会优先继续。</view>
   <view wx:for="{{topics}}" wx:key="id" class="card blue" bindtap="choose" data-id="{{item.id}}">

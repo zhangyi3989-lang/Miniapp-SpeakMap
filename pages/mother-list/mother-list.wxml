@@ -1,6 +1,6 @@
-<view class="page">
+<view class="page"><brand-header section="母句"/>
   <view class="eyebrow">YOUR LANGUAGE MAP</view>
-  <view class="title">母句训练</view>
+  <view class="title"><text class="marker">母句训练</text></view>
   <view class="muted">先理解核心意思，再主动调取。</view>
   <view wx:for="{{items}}" wx:key="id" class="card" bindtap="open" data-id="{{item.id}}">
     <view class="row">

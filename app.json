@@ -16,34 +16,46 @@
   ],
   "window": {
     "navigationBarTitleText": "SpeakMap",
-    "navigationBarBackgroundColor": "#FFF9F1",
+    "navigationBarBackgroundColor": "#FFE1C5",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#FFF9F1"
+    "backgroundColor": "#FFE1C5"
   },
   "tabBar": {
-    "color": "#84776F",
-    "selectedColor": "#E66735",
-    "backgroundColor": "#FFFCF7",
+    "color": "#7E8D84",
+    "selectedColor": "#2E9651",
+    "backgroundColor": "#FFFCF5",
     "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/home/home",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "assets/tab-home.png",
+        "selectedIconPath": "assets/tab-home-active.png"
       },
       {
         "pagePath": "pages/bank/bank",
-        "text": "学习库"
+        "text": "学习库",
+        "iconPath": "assets/tab-bank.png",
+        "selectedIconPath": "assets/tab-bank-active.png"
       },
       {
         "pagePath": "pages/review/review",
-        "text": "复习"
+        "text": "复习",
+        "iconPath": "assets/tab-review.png",
+        "selectedIconPath": "assets/tab-review-active.png"
       },
       {
         "pagePath": "pages/profile/profile",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "assets/tab-profile.png",
+        "selectedIconPath": "assets/tab-profile-active.png"
       }
     ]
   },
   "sitemapLocation": "sitemap.json",
-  "style": "v2"
+  "style": "v2",
+  "usingComponents": {
+    "brand-header": "/components/brand-header/brand-header",
+    "brand-mascot": "/components/brand-mascot/brand-mascot"
+  }
 }

@@ -8,8 +8,8 @@ Page({
     filter: 0,
     motherOptions: ["全部母句"].concat(mothers.map((m) => m.id)),
     tabs: [
-      { id: "expression", name: "表达" },
-      { id: "mistake", name: "错误" },
+      { id: "expression", name: "表达 / Chunk" },
+      { id: "mistake", name: "错误库" },
       { id: "natural_upgrade", name: "自然升级" },
     ],
   },

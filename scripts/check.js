@@ -59,8 +59,22 @@ for (const page of app.pages) {
       "事件方法缺失 " + page + " " + m[1],
     );
 }
-for (const tab of app.tabBar.list)
+for (const tab of app.tabBar.list) {
   check(app.pages.includes(tab.pagePath), "底部导航引用错误");
+  for (const key of ["iconPath", "selectedIconPath"])
+    if (tab[key])
+      check(
+        fs.existsSync(path.join(root, tab[key])),
+        "底部导航图标缺失 " + tab[key],
+      );
+}
+for (const component of Object.values(app.usingComponents || {})) {
+  for (const ext of ["js", "json", "wxml", "wxss"])
+    check(
+      fs.existsSync(path.join(root, component.slice(1) + "." + ext)),
+      "组件文件缺失 " + component,
+    );
+}
 const mothers = require("../data/motherSentences");
 const functions = require("../data/functionalExpressions");
 const config = require("../config/trainingConfig");
@@ -97,10 +111,17 @@ for (const m of mothers) {
 // 检查 WXML 标签成对、属性语法、实体转义（不替代微信编译器）。
 for (const file of files.filter((f) => f.endsWith(".wxml"))) {
   const template = fs.readFileSync(file, "utf8");
+  for (const src of template.matchAll(/src="(\/[^"{}]+)"/g))
+    check(
+      fs.existsSync(path.join(root, src[1].slice(1))),
+      "本地图片缺失 " + src[1],
+    );
   for (const match of template.matchAll(/\{\{([\s\S]*?)\}\}/g)) {
     const expression = match[1];
-    check(!/&(?:amp|lt|gt|quot|apos);/.test(expression),
-      "WXML 插值中不能用 HTML 实体替代运算符 " + file);
+    check(
+      !/&(?:amp|lt|gt|quot|apos);/.test(expression),
+      "WXML 插值中不能用 HTML 实体替代运算符 " + file,
+    );
     try {
       new Function("return (" + expression + ")");
       checks++;
@@ -125,6 +146,8 @@ for (const file of files.filter((f) => f.endsWith(".wxml"))) {
         "checkbox",
         "label",
         "block",
+        "image",
+        ...Object.keys(app.usingComponents || {}),
       ].includes(name),
       "非原生标签 " + name + " " + file,
     );
@@ -134,7 +157,9 @@ for (const file of files.filter((f) => f.endsWith(".wxml"))) {
   }
   check(!stack.length, "WXML 未闭合 " + file);
   check(
-    !/&(?!(?:amp|lt|gt|quot|apos);)/.test(source.replace(/\{\{[\s\S]*?\}\}/g, "")),
+    !/&(?!(?:amp|lt|gt|quot|apos);)/.test(
+      source.replace(/\{\{[\s\S]*?\}\}/g, ""),
+    ),
     "WXML 实体未转义 " + file,
   );
 }

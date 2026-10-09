@@ -1,45 +1,72 @@
 <view class="page">
-  <view class="brand">
-    <view class="logo">S</view>
-    SpeakMap
-  </view>
-  <view class="eyebrow">THINK · RECALL · SPEAK</view>
-  <view class="title">
-    <view>把学过的英语，</view>
-    <view>真正调出来。</view>
-  </view>
-  <view wx:if="{{demo}}" class="demo">当前为示例模式 · 文字训练 · 数据仅保存在当前设备</view>
-  <view class="card hero">
-    <view class="subtitle">一次，只练好眼前这一题</view>
-    <view class="muted">不用决定学什么。从上次停下的地方继续。</view>
-    <button class="primary" bindtap="start">开始今天的学习 →</button>
-  </view>
-  <view wx:if="{{active}}" class="card purple">
-    <view class="subtitle">还有一段表达，等你继续</view>
-    <view class="muted">
-      {{active.motherSentenceId || '自由表达 / 复习'}} · {{active.phase === 'phase0' ? 'Phase 0' : active.level}} · 第
-      {{active.itemIndex + 1}} 题
+  <brand-header section="首页"/>
+  <view class="eyebrow">每天一点，真正用出来</view>
+  <view class="title home-title">
+    <view>
+      <text class="marker">把学过的英语，</text>
     </view>
-    <button class="secondary" bindtap="continue">继续上次训练</button>
+    <view>
+      <text class="marker">真正调出来。</text>
+    </view>
+  </view>
+  <view class="muted lead">想到意思，就能说出自己的话。</view>
+  <view class="card hero">
+    <view class="row">
+      <view class="grow">
+        <view class="subtitle">今天，从这里继续</view>
+        <view class="muted">系统按你的真实进度安排。<view>一次，只练眼前这一题。</view>
+        </view>
+      </view>
+      <brand-mascot compact="{{true}}"/>
+    </view>
+    <button class="primary" bindtap="start">开始今天的学习 <text class="button-arrow">→</text>
+    </button>
+    <view class="small muted center">今天练 5 分钟，也是在往前走。</view>
+  </view>
+  <view wx:if="{{demo}}" class="demo">
+    <text class="demo-dot">●</text> 当前为示例模式 · 文字训练<view class="small">反馈用于演示流程，并非对输入的真实分析。</view>
+  </view>
+  <view wx:if="{{active}}" class="card blue">
+    <view class="row">
+      <view class="mini-icon blue-icon">↗</view>
+      <view class="grow">
+        <view class="subtitle">继续上次训练</view>
+        <view class="muted">{{active.motherSentenceId || '自由表达 / 复习'}} · {{active.phase === 'phase0' ? 'Phase 0' : active.level}} · 第 {{active.itemIndex + 1}} 题</view>
+      </view>
+    </view>
+    <button class="secondary" bindtap="continue">从停下的位置继续 →</button>
+  </view>
+  <view class="section-title">
+    <text class="marker">把一句，练成一段</text>
   </view>
   <view class="grid">
-    <view class="stat" bindtap="mothers">
+    <view class="entry-card blue" bindtap="mothers">
+      <view class="mini-icon blue-icon">句</view>
       <view class="subtitle">母句训练 ↗</view>
-      <view class="muted">把意思变成自己的话</view>
+      <view class="muted">从理解到自己说出来</view>
+      <view class="small muted">3 个可训练示例母句</view>
     </view>
-    <view class="stat" bindtap="free">
+    <view class="entry-card pink" bindtap="free">
+      <view class="mini-icon pink-icon">…</view>
       <view class="subtitle">自由表达 ↗</view>
       <view class="muted">从一个真实话题开始</view>
+      <view class="small muted">用自己的观点回答</view>
     </view>
   </view>
   <view class="card green" bindtap="reviews">
     <view class="row">
-      <view>今日到期复习</view>
+      <view class="mini-icon green-icon">↻</view>
+      <view class="grow">
+        <view class="subtitle">今日到期复习</view>
+        <view class="muted">{{stats.due ? '先自己回忆，再看参考。' : '今天没有到期复习。'}}</view>
+      </view>
       <view class="number">{{stats.due}}</view>
     </view>
-    <view class="muted">{{stats.due ? '先回忆，再看参考。' : '今天没有到期复习。'}}</view>
   </view>
-  <view class="grid">
+  <view class="section-title">
+    <text class="marker">每次表达，都有记录</text>
+  </view>
+  <view class="stats-grid">
     <view class="stat">
       <view class="number">{{stats.started}}</view>
       <view class="muted">已训练母句</view>
@@ -58,4 +85,5 @@
     </view>
   </view>
   <view wx:if="{{!stats.answers}}" class="empty">第一次练习，就从一句自己的话开始。</view>
+  <view class="footnote">学习数据仅保存在当前设备</view>
 </view>

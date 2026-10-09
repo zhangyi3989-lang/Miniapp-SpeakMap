@@ -1,0 +1,20 @@
+<view class="heading">
+  <view class="binding">
+    <view/>
+  <view/>
+<view/>
+<view/>
+<view/>
+<view/>
+<view/>
+<view/>
+</view>
+<view class="tape"/>
+<view class="heading-row">
+  <view class="wordmark">
+    <view class="seal">✓</view>
+    <text class="wordmark-text">SpeakMap Core</text>
+  </view>
+  <view class="section">{{section}}</view>
+</view>
+</view>

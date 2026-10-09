@@ -1,9 +1,9 @@
-<view class="page">
+<view class="page"><brand-header section="训练"/>
   <view wx:if="{{session}}">
     <view wx:if="{{mother}}" class="english">{{mother.skeleton}}</view>
     <view wx:if="{{demo}}" class="demo">当前为示例模式</view>
     <block wx:if="{{session.completed}}">
-      <view class="title">这一轮完成了</view>
+      <view class="title"><text class="marker">这一轮完成了</text></view>
       <view class="card green">
         已保存 {{session.answers.length}} 条真实回答。{{session.sessionType === 'training' ? 'R1 已安排在 ' + r1Days + ' 天后；训练完成不代表系统判断掌握。' : '你的表达已经保存在当前设备。'}}
       </view>
@@ -12,7 +12,7 @@
     </block>
     <block wx:elif="{{session.phase === 'phase0'}}">
       <view class="badge">Phase 0 · 快速学习</view>
-      <view class="title">先抓住这个意思</view>
+      <view class="title"><text class="marker">先抓住这个意思</text></view>
       <view class="card hero">{{mother.meaning}}</view>
       <view><text wx:for="{{mother.scenes}}" wx:key="*this" class="tag">{{item}}</text></view>
       <view class="card"><view wx:for="{{mother.examples}}" wx:key="*this" class="line english">{{item}}</view></view>
@@ -23,7 +23,7 @@
         <view class="badge">{{session.sessionType === 'training' ? session.level + ' / L6' : task.title}}</view>
         <view wx:if="{{task.total}}" class="muted">{{session.itemIndex+1}} / {{task.total}}</view>
       </view>
-      <view class="title">{{task.title}}</view>
+      <view class="title"><text class="marker">{{task.title}}</text></view>
       <view wx:if="{{task.map.length}}" class="map">
         <view
           wx:for="{{task.map}}"

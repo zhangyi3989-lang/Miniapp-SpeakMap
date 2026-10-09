@@ -1,0 +1,4 @@
+<view class="mascot-wrap {{compact ? 'compact' : ''}}">
+  <view wx:if="{{caption}}" class="mascot-caption">{{caption}}</view>
+  <image class="mascot-image" src="/assets/speakmap-cat.png" mode="aspectFit"/>
+</view>

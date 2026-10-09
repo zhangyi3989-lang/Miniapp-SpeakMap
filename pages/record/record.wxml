@@ -1,5 +1,5 @@
-<view class="page">
-  <view class="title">训练记录</view>
+<view class="page"><brand-header section="记录"/>
+  <view class="title"><text class="marker">训练记录</text></view>
   <view wx:if="{{session}}">
     <view class="muted">{{session.motherSentenceId || '自由表达 / 复习'}} · {{session.createdAt}}</view>
     <view class="muted">

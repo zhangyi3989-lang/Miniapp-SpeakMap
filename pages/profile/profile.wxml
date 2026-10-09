@@ -1,13 +1,11 @@
-<view class="page">
-  <view class="brand">
-    <view class="logo">S</view>
-    我的 SpeakMap
-  </view>
-  <view class="card purple">
+<view class="page"><brand-header section="我的"/>
+  <view class="title"><text class="marker">我的学习足迹</text></view>
+  <brand-mascot caption="每次练习，都留下属于你的表达。"/>
+  <view class="card green">
     <view class="subtitle">每次开口，都留下真实记录</view>
     <view class="muted">数据只保存在当前设备，不会自动跨设备同步。</view>
   </view>
-  <view class="grid">
+  <view class="stats-grid">
     <view class="stat">
       <view class="number">{{stats.days}}</view>
       <view class="muted">训练天数</view>
@@ -34,7 +32,7 @@
     </view>
   </view>
   <button bindtap="backup">数据备份 / 恢复 / 清空</button>
-  <view class="subtitle">最近训练记录</view>
+  <view class="section-title"><text class="marker">最近训练记录</text></view>
   <view wx:for="{{records}}" wx:key="sessionId" class="card" data-id="{{item.sessionId}}" bindtap="record">
     <view class="row">
       <view>{{item.motherSentenceId || '自由表达 / 学习库复习'}}</view>

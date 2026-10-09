@@ -1,0 +1,28 @@
+.mascot-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 18rpx 0;
+}
+.mascot-image {
+  width: 210rpx;
+  height: 210rpx;
+  flex-shrink: 0;
+}
+.mascot-caption {
+  max-width: 300rpx;
+  color: #164566;
+  font-size: 27rpx;
+  font-weight: 700;
+  line-height: 1.65;
+  background: #fff2cb;
+  border-radius: 26rpx;
+  padding: 20rpx 24rpx;
+}
+.compact .mascot-image {
+  width: 130rpx;
+  height: 130rpx;
+}
+.compact {
+  margin: 8rpx 0;
+}
