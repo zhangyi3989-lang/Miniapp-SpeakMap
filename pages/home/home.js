@@ -1,10 +1,15 @@
 const scheduler = require("../../services/learningScheduler");
+const storage = require("../../services/storage");
+const training = require("../../services/trainingService");
 const ui = require("../../utils/page");
 Page({
   data: { demo: ui.demo, expanded: false, statusBarHeight: 24 },
   onShow() {
     const plan = scheduler.plan();
+    const active=storage.load().sessions.find(s=>!s.completed);
+    const current=plan.steps[0];
     this.setData({
+      currentTitle: active && active.sessionType==='training' ? `${active.motherSentenceId} · ${active.phase==='phase0'?'快速学习':active.level+' '+training.titles[active.level]}` : current ? current.title.replace(/^母句 /,'') : '今日学习已完成',
       statusBarHeight: wx.getWindowInfo
         ? wx.getWindowInfo().statusBarHeight
         : 24,
