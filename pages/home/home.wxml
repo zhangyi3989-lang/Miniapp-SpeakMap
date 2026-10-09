@@ -14,7 +14,7 @@
     <view class="row">
       <view class="grow">
         <view class="subtitle">今天，从这里继续</view>
-        <view class="muted">系统按你的真实进度安排。<view>一次，只练眼前这一题。</view>
+        <view class="muted">从上次停下的位置继续。<view>完成后，自动安排复习或新母句。</view>
         </view>
       </view>
       <brand-mascot compact="{{true}}"/>
@@ -25,16 +25,6 @@
   </view>
   <view wx:if="{{demo}}" class="demo">
     <text class="demo-dot">●</text> 当前为示例模式 · 文字训练<view class="small">反馈用于演示流程，并非对输入的真实分析。</view>
-  </view>
-  <view wx:if="{{active}}" class="card blue">
-    <view class="row">
-      <view class="mini-icon blue-icon">↗</view>
-      <view class="grow">
-        <view class="subtitle">继续上次训练</view>
-        <view class="muted">{{active.motherSentenceId || '自由表达 / 复习'}} · {{active.phase === 'phase0' ? 'Phase 0' : active.level}} · 第 {{active.itemIndex + 1}} 题</view>
-      </view>
-    </view>
-    <button class="secondary" bindtap="continue">从停下的位置继续 →</button>
   </view>
   <view class="section-title">
     <text class="marker">把一句，练成一段</text>
