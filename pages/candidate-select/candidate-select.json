@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "选择候选" }
+{
+  "navigationBarTitleText": "选择候选",
+  "usingComponents": {
+    "brand-header": "/components/brand-header/brand-header"
+  }
+}

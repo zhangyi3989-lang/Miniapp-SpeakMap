@@ -1,1 +1,7 @@
-{ "navigationBarTitleText": "复习" }
+{
+  "navigationBarTitleText": "复习",
+  "usingComponents": {
+    "brand-header": "/components/brand-header/brand-header",
+    "brand-mascot": "/components/brand-mascot/brand-mascot"
+  }
+}

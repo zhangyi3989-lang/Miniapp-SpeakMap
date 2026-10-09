@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "反馈" }
+{
+  "navigationBarTitleText": "反馈",
+  "usingComponents": {
+    "brand-header": "/components/brand-header/brand-header"
+  }
+}

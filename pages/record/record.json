@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "训练记录" }
+{
+  "navigationBarTitleText": "训练记录",
+  "usingComponents": {
+    "brand-header": "/components/brand-header/brand-header"
+  }
+}

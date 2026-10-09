@@ -53,9 +53,5 @@
     ]
   },
   "sitemapLocation": "sitemap.json",
-  "style": "v2",
-  "usingComponents": {
-    "brand-header": "/components/brand-header/brand-header",
-    "brand-mascot": "/components/brand-mascot/brand-mascot"
-  }
+  "style": "v2"
 }

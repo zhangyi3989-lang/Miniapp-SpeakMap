@@ -58,7 +58,7 @@ function runtime(legacyTraining = false) {
     boot() {
       load(path.join(root, "app.js"));
       application.onLaunch();
-      for (const component of Object.values(appConfig.usingComponents || {})) {
+      for (const component of new Set(appConfig.pages.flatMap(route => Object.values(JSON.parse(fs.readFileSync(path.join(root,route + ".json"), "utf8")).usingComponents || {})))) {
         currentPage = component;
         load(path.join(root, component.slice(1) + ".js"));
       }
@@ -100,5 +100,23 @@ test("复现旧目录引用中断注册，修复后 13 个页面按微信文件�
       assert.equal(instance.data.items.length, 0);
     if (tab.pagePath.endsWith("/review"))
       assert.equal(instance.data.dueCount, 0);
+  }
+});
+
+test('品牌组件按页面注册，依赖图不包含自引用或相互递归', () => {
+  assert.equal(appConfig.usingComponents, undefined);
+  for (const route of appConfig.pages) {
+    const pageConfig=JSON.parse(fs.readFileSync(path.join(root,route+'.json'),'utf8'));
+    assert.ok(pageConfig.usingComponents['brand-header']);
+    const visiting=new Set(),visited=new Set();
+    function visit(component) {
+      assert.ok(!visiting.has(component),'组件依赖不能递归: '+component);
+      if(visited.has(component))return;
+      visiting.add(component);
+      const config=JSON.parse(fs.readFileSync(path.join(root,component.slice(1)+'.json'),'utf8'));
+      Object.values(config.usingComponents||{}).forEach(visit);
+      visiting.delete(component);visited.add(component);
+    }
+    Object.values(pageConfig.usingComponents).forEach(visit);
   }
 });

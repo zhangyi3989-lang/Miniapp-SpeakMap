@@ -1,1 +1,7 @@
-{ "navigationBarTitleText": "学习库" }
+{
+  "navigationBarTitleText": "学习库",
+  "usingComponents": {
+    "brand-header": "/components/brand-header/brand-header",
+    "brand-mascot": "/components/brand-mascot/brand-mascot"
+  }
+}

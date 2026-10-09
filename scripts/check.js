@@ -44,8 +44,13 @@ for (const file of files) {
   }
 }
 const app = require("../app.json");
+const componentNames = new Set(Object.keys(app.usingComponents || {}));
+const componentPaths = new Set(Object.values(app.usingComponents || {}));
 check(new Set(app.pages).size === app.pages.length, "页面重复");
 for (const page of app.pages) {
+  const local = JSON.parse(fs.readFileSync(path.join(root,page + ".json"),"utf8")).usingComponents || {};
+  Object.keys(local).forEach(name=>componentNames.add(name));
+  Object.values(local).forEach(file=>componentPaths.add(file));
   for (const ext of ["js", "json", "wxml", "wxss"])
     check(
       fs.existsSync(path.join(root, page + "." + ext)),
@@ -68,7 +73,7 @@ for (const tab of app.tabBar.list) {
         "底部导航图标缺失 " + tab[key],
       );
 }
-for (const component of Object.values(app.usingComponents || {})) {
+for (const component of componentPaths) {
   for (const ext of ["js", "json", "wxml", "wxss"])
     check(
       fs.existsSync(path.join(root, component.slice(1) + "." + ext)),
@@ -147,7 +152,7 @@ for (const file of files.filter((f) => f.endsWith(".wxml"))) {
         "label",
         "block",
         "image",
-        ...Object.keys(app.usingComponents || {}),
+        ...componentNames,
       ].includes(name),
       "非原生标签 " + name + " " + file,
     );

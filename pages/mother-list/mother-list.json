@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "母句训练" }
+{
+  "navigationBarTitleText": "母句训练",
+  "usingComponents": {
+    "brand-header": "/components/brand-header/brand-header"
+  }
+}

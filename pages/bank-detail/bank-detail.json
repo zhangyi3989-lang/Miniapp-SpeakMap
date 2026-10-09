@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "学习内容" }
+{
+  "navigationBarTitleText": "学习内容",
+  "usingComponents": {
+    "brand-header": "/components/brand-header/brand-header"
+  }
+}

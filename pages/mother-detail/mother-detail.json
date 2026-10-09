@@ -1,1 +1,6 @@
-{ "navigationBarTitleText": "母句详情" }
+{
+  "navigationBarTitleText": "母句详情",
+  "usingComponents": {
+    "brand-header": "/components/brand-header/brand-header"
+  }
+}
