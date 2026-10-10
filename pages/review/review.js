@@ -53,17 +53,17 @@ Page({
           {
             type: "mistake",
             name: "错误库复习",
-            description: "练习自己容易说错的表达。",
+            description: "修正常见错误，让表达更准确",
           },
           {
             type: "natural_upgrade",
             name: "地道升级库复习",
-            description: "把原来的说法换成更自然的表达。",
+            description: "用更自然的说法，提升表达质感",
           },
           {
             type: "expression",
             name: "Chunk库复习",
-            description: "在新场景中调用积累的词块。",
+            description: "积累实用的地道表达片段",
           },
         ].map((c) =>
           Object.assign({}, c, {

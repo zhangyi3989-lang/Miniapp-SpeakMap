@@ -1,9 +1,9 @@
 {
-  "navigationBarTitleText": "学习库",
+  "navigationBarTitleText": "",
   "usingComponents": {
     "brand-header": "/components/brand-header/brand-header",
     "brand-mascot": "/components/brand-mascot/brand-mascot"
   },
-  "navigationBarBackgroundColor": "#FFF0DF",
+  "navigationBarBackgroundColor": "#FFF8EF",
   "navigationBarTextStyle": "black"
 }

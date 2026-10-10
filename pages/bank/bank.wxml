@@ -1,13 +1,13 @@
 <view class="page catalog-page">
   <view class="title">学习库</view><view class="muted">把每一次表达变得更地道</view>
-  <input class="library-search" placeholder="搜索表达或中文意思" value="{{query}}" bindinput="search"/>
-  <view class="category-grid"><view wx:for="{{categories}}" wx:key="id" class="category-tile {{item.id}} {{type === item.id ? 'selected' : ''}}" data-id="{{item.id}}" bindtap="tab"><image src="/assets/ui-{{item.icon}}.png" mode="aspectFit" style="width:42rpx;height:42rpx;"/><view>{{item.name}}</view><view class="category-count">{{item.count}}</view></view></view>
+  <view class="library-search"><image src="/assets/c-search.png" mode="aspectFit" style="width:34rpx;height:34rpx;flex-shrink:0;"/><input placeholder="搜索表达或中文意思" placeholder-style="color:#8b9aad;" value="{{query}}" bindinput="search"/></view>
+  <view class="category-grid"><view wx:for="{{categories}}" wx:key="id" class="category-tile {{item.id}} {{type === item.id ? 'selected' : ''}}" data-id="{{item.id}}" bindtap="tab"><image src="/assets/ui-{{item.icon}}.png" mode="aspectFit" style="width:52rpx;height:52rpx;"/><view class="category-name">{{item.name}}</view><view class="category-count">{{item.count}}</view><image class="category-chevron" src="/assets/c-chevron.png" mode="aspectFit" style="width:18rpx;height:24rpx;"/></view></view>
   <view class="row list-heading"><view class="subtitle">{{selectedName}} <text class="small muted">（{{items.length}}条）</text></view><picker range="{{motherOptions}}" value="{{filter}}" bindchange="filter"><view class="small muted">{{motherOptions[filter]}} ▾</view></picker></view>
   <view wx:for="{{items}}" wx:key="id" class="card expression-card {{type}}" bindtap="open" data-id="{{item.id}}">
-    <view class="expression-line" wx:if="{{item.myExpression}}"><view class="expression-label">{{type === 'mistake' ? '原表达' : '原说法'}}</view><view class="grow">{{item.myExpression}}</view></view>
-    <view class="expression-line"><view class="expression-label">{{type === 'mistake' ? '修改后' : type === 'natural_upgrade' ? '更自然' : '表达'}}</view><view class="grow expression-value">{{item.text}}</view></view>
+    <view class="expression-line" wx:if="{{item.myExpression}}"><view class="expression-label">ORIGINAL</view><view class="grow">{{item.myExpression}}</view></view>
+    <view class="expression-line"><view class="expression-label">{{type === 'expression' ? 'EXPRESSION' : 'CORRECTION'}}</view><view class="grow expression-value">{{item.text}}</view></view>
     <view class="expression-line"><view class="expression-label">中文意思</view><view class="grow muted">{{item.meaning}}</view></view>
-    <view class="row expression-meta"><view>{{item.provenance === 'demo_reference' ? '示例内容' : '学习内容'}} · {{item.sourceMotherSentenceId || '自由表达'}}</view><view>查看 ›</view></view>
+    <image class="expression-chevron" src="/assets/c-chevron.png" mode="aspectFit" style="width:18rpx;height:24rpx;"/>
   </view>
   <view wx:if="{{!items.length}}" class="empty">{{query || filter ? '没有找到匹配内容。' : '这里还没有表达。完成训练后，选择想留下的内容。'}}</view>
 </view>

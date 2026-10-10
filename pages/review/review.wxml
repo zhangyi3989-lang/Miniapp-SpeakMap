@@ -1,10 +1,10 @@
 <view class="page review-page">
-  <block wx:if="{{!session}}">
+  <view wx:if="{{!session}}" class="review-overview">
     <view class="title"><text class="marker">学习库复习</text></view>
     <view class="muted">先想起来，再换个场景用出来。</view>
     <view wx:for="{{categories}}" wx:key="type" class="card review-category {{item.type}}" data-type="{{item.type}}" bindtap="selectBank">
-      <view class="review-category-top"><view class="review-icon"><image src="/assets/ui-{{item.type === 'mistake' ? 'mistake' : item.type === 'natural_upgrade' ? 'upgrade' : 'chunk'}}.png" mode="aspectFit" style="width:46rpx;height:46rpx;"/></view><view class="grow"><view class="subtitle">{{item.name}}</view><view class="small muted">{{item.description}}</view></view></view>
-      <view class="review-category-bottom"><view class="due-metric"><text>{{item.due}}</text> 条<view class="small muted">今日待复习</view></view><view class="accumulated small muted">已积累 {{item.total}} 条</view><button class="primary review-start" data-type="{{item.type}}" catchtap="startBank">{{item.due ? '开始复习 →' : '查看安排 →'}}</button></view>
+      <view class="review-category-top"><view class="review-icon"><image src="/assets/ui-{{item.type === 'mistake' ? 'mistake' : item.type === 'natural_upgrade' ? 'upgrade' : 'chunk'}}.png" mode="aspectFit" style="width:66rpx;height:66rpx;"/></view><view class="grow"><view class="subtitle">{{item.name}}</view><view class="small muted">{{item.description}}</view></view></view>
+      <view class="review-category-bottom"><view class="due-metric"><text>{{item.due}}</text> 条<view class="small muted">今日待复习</view></view><view class="accumulated small muted">已积累 <text>{{item.total}}</text> 条</view><button class="primary review-start" data-type="{{item.type}}" catchtap="startBank">{{item.due ? '开始复习' : '查看安排'}}<image src="/assets/home-arrow.png" mode="aspectFit" style="width:28rpx;height:28rpx;flex-shrink:0;"/></button></view>
     </view>
     <block wx:if="{{selectedType}}">
       <view class="subtitle">所选学习库的复习安排</view>
@@ -14,7 +14,7 @@
       </view>
       <view wx:if="{{!items.length}}" class="empty">暂无待安排的条目。加入这个学习库后，会自动安排复习。</view>
     </block>
-  </block>
+  </view>
   <block wx:else>
     <view class="badge">R{{stage+1}} / R5 · {{task.name}}</view>
     <view class="title">{{task.prompt}}</view>
