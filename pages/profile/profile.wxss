@@ -24,7 +24,7 @@ page {
 .profile-heading .grow { position: relative; z-index: 1; padding-right: 174rpx; }
 .profile-heading .title { font-size: 44rpx; white-space: nowrap; }
 .profile-heading .small.muted { font-size: 24rpx; white-space: nowrap; }
-.profile-cat { position: absolute; right: -12rpx; bottom: -14rpx; z-index: 0; }
+.profile-cat { position: absolute; right: -12rpx; top: 0; bottom: auto; z-index: 0; }
 .profile-page .summary-card { position: relative; display: flex; align-items: center; padding: 34rpx 14rpx; margin: 0 0 32rpx; }
 .summary-metric { flex: 1; text-align: center; font-size: 26rpx; color: #62778d; line-height: 1.4; }
 .summary-metric + .summary-metric { border-left: 1rpx solid #e1e6eb; }

@@ -1,5 +1,5 @@
 <view class="page profile-page">
-  <view class="profile-heading"><view class="grow"><view class="title">我的学习足迹</view><view class="muted small">每一次学习都是靠近更好的你</view></view><image class="profile-cat" src="/assets/c-profile-cat.png" mode="aspectFit" style="width:258rpx;height:258rpx;"/></view>
+  <view class="profile-heading"><view class="grow"><view class="title">我的学习足迹</view><view class="muted small">每一次学习都是靠近更好的你</view></view><image class="profile-cat" src="/assets/c-profile-cat.png" mode="aspectFit" style="width:210rpx;height:176rpx;"/></view>
   <view class="card summary-card" bindtap="toggleDetails"><view class="summary-metric"><view class="metric-number">{{stats.days}}</view><view>训练天数</view></view><view class="summary-metric"><view class="metric-number">{{stats.answers}}</view><view>累计回答</view></view><view class="summary-metric"><view class="metric-number">{{stats.completed}}</view><view>完成母句</view></view></view>
 
   <view wx:if="{{detailsOpen}}" class="card small muted">已开始母句 {{stats.started}} · 复习 {{stats.reviews}} 次 · 学习库 {{stats.banks}} 条</view>
