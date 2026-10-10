@@ -55,6 +55,10 @@ Page({
     this.setData({ type: e.currentTarget.dataset.id });
     this.refresh();
   },
+  focusSearch() {
+    this.setData({ searchFocused: false });
+    this.setData({ searchFocused: true });
+  },
   search(e) {
     this.setData({ query: e.detail.value });
     this.refresh();
