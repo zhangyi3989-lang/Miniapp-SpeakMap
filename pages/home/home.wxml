@@ -1,10 +1,10 @@
 <view class="page home-page" style="padding-top: {{statusBarHeight}}px;">
   <image class="home-scene" src="/assets/home-scene.jpg" mode="aspectFill"/>
-  <view class="home-header"><view class="home-logo"><image class="logo-leaf" src="/assets/home-leaf.png"/>SpeakMap<image class="logo-leaf trailing" src="/assets/home-leaf.png"/></view><view class="home-tagline">用英语，打开更大的世界</view><image class="home-bell" src="/assets/home-bell.png" bindtap="togglePlan"/></view>
+  <view class="home-header"><view class="home-logo" style="display:flex;align-items:center;gap:10rpx;"><image class="logo-leaf" mode="aspectFit" style="width:30rpx;height:30rpx;flex-shrink:0;" src="/assets/home-leaf.png"/>SpeakMap<image class="logo-leaf trailing" mode="aspectFit" style="width:28rpx;height:28rpx;flex-shrink:0;" src="/assets/home-leaf.png"/></view><view class="home-tagline">用英语，打开更大的世界</view><image class="home-bell" mode="aspectFit" style="position:absolute;right:18rpx;bottom:12rpx;width:38rpx;height:38rpx;padding:8rpx;" src="/assets/home-bell.png" bindtap="togglePlan"/></view>
   <view class="home-welcome"><view class="welcome-title">今天，继续向前</view><view class="welcome-line">每一次学习都是靠近更好的你</view></view>
   <view class="card current-card">
     <view class="current-main"><view class="current-copy"><view class="badge">当前学习</view><view class="current-title">{{currentTitle}}</view><view class="muted current-description">{{current.detail}}</view></view><image class="reading-cat" src="/assets/home-reading-cat.png" mode="aspectFit"/></view>
-    <button class="primary" bindtap="start">开始今天的学习 <image class="cta-arrow" src="/assets/home-arrow.png"/></button>
+    <button class="primary" bindtap="start" style="display:flex;align-items:center;justify-content:center;width:100%;height:88rpx;min-height:88rpx;max-height:88rpx;padding:0 12rpx;box-sizing:border-box;overflow:hidden;">开始今天的学习 <image class="cta-arrow" mode="aspectFit" style="width:36rpx;height:36rpx;flex-shrink:0;margin-left:24rpx;" src="/assets/home-arrow.png"/></button>
   </view>
   <view class="card route-card">
     <view class="row route-heading"><view class="subtitle">接下来的学习</view><view class="plan-toggle" bindtap="togglePlan">{{expanded ? '收起' : '查看全部'}} ›</view></view>
@@ -14,8 +14,8 @@
     <view wx:if="{{!expanded && pendingCount > previewSteps.length}}" class="small muted more-note">还有 {{pendingCount-previewSteps.length}} 项安排，查看全部了解。</view>
   </view>
   <view class="grid content-entries">
-    <view class="entry-card resource-mothers" bindtap="mothers"><image class="resource-icon" src="/assets/home-book.png"/><view class="grow"><view class="subtitle">34个母句</view><view class="small muted">打好表达基础</view></view><image class="entry-arrow" src="/assets/home-chevron.png"/></view>
-    <view class="entry-card resource-functions" bindtap="functions"><image class="resource-icon" src="/assets/home-bubble.png"/><view class="grow"><view class="subtitle">12个功能表达</view><view class="small muted">应对真实场景</view></view><image class="entry-arrow" src="/assets/home-chevron.png"/></view>
+    <view class="entry-card resource-mothers" bindtap="mothers"><image class="resource-icon" mode="aspectFit" style="width:52rpx;height:52rpx;flex-shrink:0;" src="/assets/home-book.png"/><view class="grow"><view class="subtitle">34个母句</view><view class="small muted">打好表达基础</view></view><image class="entry-arrow" mode="aspectFit" style="width:20rpx;height:28rpx;flex-shrink:0;" src="/assets/home-chevron.png"/></view>
+    <view class="entry-card resource-functions" bindtap="functions"><image class="resource-icon" mode="aspectFit" style="width:52rpx;height:52rpx;flex-shrink:0;" src="/assets/home-bubble.png"/><view class="grow"><view class="subtitle">12个功能表达</view><view class="small muted">应对真实场景</view></view><image class="entry-arrow" mode="aspectFit" style="width:20rpx;height:28rpx;flex-shrink:0;" src="/assets/home-chevron.png"/></view>
   </view>
   <view wx:if="{{demo}}" class="demo small">当前为示例模式 · 暂用文字作答，语音尚未接入。反馈用于演示流程。</view>
   <view class="footnote">学习数据仅保存在当前设备</view>

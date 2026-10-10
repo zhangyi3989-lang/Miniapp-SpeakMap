@@ -262,13 +262,163 @@ page {
 }
 
 /* C 参考图统一图标、字阶和颜色。 */
-.home-page{font-family:"PingFang SC","Helvetica Neue",Arial,sans-serif;color:#173f59;}
-.home-logo{display:flex;align-items:center;font-size:36rpx;font-weight:750;color:#123b57;gap:10rpx;}.logo-leaf{width:30rpx;height:30rpx;flex-shrink:0;}.logo-leaf.trailing{width:28rpx;height:28rpx;}
-.home-tagline{font-size:23rpx;margin-top:6rpx;color:#7c8c91;}
-.welcome-title{font-size:52rpx;letter-spacing:0;font-weight:750;color:#153b55;}.welcome-line{font-size:25rpx;color:#7d8d91;}
-.current-card{border-radius:34rpx;background:linear-gradient(125deg,#fff0dc,#fce0c7);box-shadow:0 8rpx 24rpx rgba(139,104,61,.04);}.current-title{font-size:36rpx;font-weight:700;color:#173f59;}.current-description{font-size:26rpx;color:#7b8e91;}.current-card .badge{font-size:23rpx;color:#6b8b58;background:#e6eccb;padding:5rpx 14rpx;border-radius:10rpx;}
-.home-page .current-card button.primary{display:flex;justify-content:center;align-items:center;gap:26rpx;background:linear-gradient(120deg,#679e6c,#72ab76);font-size:32rpx;font-weight:500;min-height:88rpx;padding:20rpx 12rpx;}.cta-arrow{width:36rpx;height:36rpx;}
-.route-heading .subtitle{font-size:30rpx;color:#173f59;font-weight:650;}.plan-title{font-size:27rpx;color:#173f59;font-weight:650;}.route-description{font-size:23rpx;color:#8a979c;}.route-number{font-size:29rpx;color:#23475c;background:#eef0f1;}.route-number.review{color:#8b5b34;background:#fce0c8;}.plan-toggle{font-size:24rpx;color:#8c979d;}.next-label{font-size:24rpx;color:#68a16d;}.due-chip{display:inline-block;padding:0 8rpx;margin-left:10rpx;border-radius:6rpx;color:#c68357;background:#fff0df;font-size:20rpx;font-weight:550;}
-.resource-icon{width:52rpx;height:52rpx;flex-shrink:0;}.content-entries .entry-card{width:calc((100% - 16rpx) / 2);gap:14rpx;min-height:170rpx;}.resource-mothers{background:linear-gradient(120deg,#eef6e9,#e5f1df);}.resource-functions{background:linear-gradient(120deg,#fff8df,#fff1c8);}.content-entries .subtitle{font-size:26rpx;color:#173f59;font-weight:650;}.content-entries .small{font-size:22rpx;color:#91a090;}.entry-arrow{width:20rpx;height:28rpx;flex-shrink:0;}
+.home-page {
+  font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  color: #173f59;
+}
+.home-logo {
+  display: flex;
+  align-items: center;
+  font-size: 36rpx;
+  font-weight: 750;
+  color: #123b57;
+  gap: 10rpx;
+}
+.logo-leaf {
+  width: 30rpx;
+  height: 30rpx;
+  flex-shrink: 0;
+}
+.logo-leaf.trailing {
+  width: 28rpx;
+  height: 28rpx;
+}
+.home-tagline {
+  font-size: 23rpx;
+  margin-top: 6rpx;
+  color: #7c8c91;
+}
+.welcome-title {
+  font-size: 52rpx;
+  letter-spacing: 0;
+  font-weight: 750;
+  color: #153b55;
+}
+.welcome-line {
+  font-size: 25rpx;
+  color: #7d8d91;
+}
+.current-card {
+  border-radius: 34rpx;
+  background: linear-gradient(125deg, #fff0dc, #fce0c7);
+  box-shadow: 0 8rpx 24rpx rgba(139, 104, 61, 0.04);
+}
+.current-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #173f59;
+}
+.current-description {
+  font-size: 26rpx;
+  color: #7b8e91;
+}
+.current-card .badge {
+  font-size: 23rpx;
+  color: #6b8b58;
+  background: #e6eccb;
+  padding: 5rpx 14rpx;
+  border-radius: 10rpx;
+}
+.home-page .current-card button.primary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 26rpx;
+  background: linear-gradient(120deg, #679e6c, #72ab76);
+  font-size: 32rpx;
+  font-weight: 500;
+  min-height: 88rpx;
+  padding: 20rpx 12rpx;
+}
+.cta-arrow {
+  width: 36rpx;
+  height: 36rpx;
+}
+.route-heading .subtitle {
+  font-size: 30rpx;
+  color: #173f59;
+  font-weight: 650;
+}
+.plan-title {
+  font-size: 27rpx;
+  color: #173f59;
+  font-weight: 650;
+}
+.route-description {
+  font-size: 23rpx;
+  color: #8a979c;
+}
+.route-number {
+  font-size: 29rpx;
+  color: #23475c;
+  background: #eef0f1;
+}
+.route-number.review {
+  color: #8b5b34;
+  background: #fce0c8;
+}
+.plan-toggle {
+  font-size: 24rpx;
+  color: #8c979d;
+}
+.next-label {
+  font-size: 24rpx;
+  color: #68a16d;
+}
+.due-chip {
+  display: inline-block;
+  padding: 0 8rpx;
+  margin-left: 10rpx;
+  border-radius: 6rpx;
+  color: #c68357;
+  background: #fff0df;
+  font-size: 20rpx;
+  font-weight: 550;
+}
+.resource-icon {
+  width: 52rpx;
+  height: 52rpx;
+  flex-shrink: 0;
+}
+.content-entries .entry-card {
+  width: calc((100% - 16rpx) / 2);
+  gap: 14rpx;
+  min-height: 170rpx;
+}
+.resource-mothers {
+  background: linear-gradient(120deg, #eef6e9, #e5f1df);
+}
+.resource-functions {
+  background: linear-gradient(120deg, #fff8df, #fff1c8);
+}
+.content-entries .subtitle {
+  font-size: 26rpx;
+  color: #173f59;
+  font-weight: 650;
+}
+.content-entries .small {
+  font-size: 22rpx;
+  color: #91a090;
+}
+.entry-arrow {
+  width: 20rpx;
+  height: 28rpx;
+  flex-shrink: 0;
+}
 
-.home-bell{position:absolute;right:18rpx;bottom:12rpx;width:38rpx;height:38rpx;padding:8rpx;}
+.home-bell {
+  position: absolute;
+  right: 18rpx;
+  bottom: 12rpx;
+  width: 38rpx;
+  height: 38rpx;
+  padding: 8rpx;
+}
+
+/* 微信原生 image 默认尺寸较大，图标与按钮尺寸在模板中同步约束。 */
+.home-page .current-card button.primary {
+  height: 88rpx;
+  max-height: 88rpx;
+  overflow: hidden;
+  box-sizing: border-box;
+}
