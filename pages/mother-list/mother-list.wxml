@@ -1,4 +1,5 @@
-<view class="page"><brand-header section="母句"/>
+<brand-header back="{{true}}"/>
+<view class="page">
   <view class="eyebrow">YOUR LANGUAGE MAP</view>
   <view class="title"><text class="marker">34个母句</text></view>
   <view class="muted">34个母句 · 按学习顺序排列，点击查看核心介绍与详细资料。</view>

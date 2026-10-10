@@ -395,3 +395,9 @@ button.primary {background:linear-gradient(180deg,#67aa6c,#52935d);border:0;box-
 button.secondary {background:#edf3ed;color:#42764d;box-shadow:none;}
 .badge {border-radius:10rpx;font-size:21rpx;font-weight:600;background:#e9f3dd;}
 .subtitle {font-weight:700;}
+
+/* Full-height Scheme C background, including custom navigation and status bar. */
+page {
+  background-color: #fffaf3;
+  background-image: linear-gradient(145deg, rgba(255,225,196,.46) 0%, rgba(255,245,230,.2) 26%, transparent 26%), linear-gradient(155deg, transparent 8%, rgba(255,232,207,.35) 8%, rgba(255,232,207,.35) 18%, transparent 18%), linear-gradient(180deg, #fff9f1, #fffaf5);
+}

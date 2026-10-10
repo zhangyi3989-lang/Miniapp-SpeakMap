@@ -1,5 +1,6 @@
+<brand-header back="{{true}}"/>
 <view class="page">
-  <brand-header section="快速学习"/>
+
   <view class="badge">{{mother.id}} · 核心内容</view>
   <view class="title"><text class="marker">{{mother.skeleton}}</text></view>
   <view class="card hero"><view class="subtitle">核心语感</view><view>{{mother.meaning}}</view></view>

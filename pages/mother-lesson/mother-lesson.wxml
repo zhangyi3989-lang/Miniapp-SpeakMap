@@ -1,5 +1,6 @@
+<brand-header back="{{true}}"/>
 <view class="page">
-  <brand-header section="详细学习"/>
+
   <view class="badge">{{mother.id}} · {{mother.category}}</view>
   <view class="title">{{mother.skeleton}}</view>
   <view class="muted small">母句学习资料 · 按原文整理。资料中的训练阶段说明不改变当前小程序 L1–L6 流程。</view>

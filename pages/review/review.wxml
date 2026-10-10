@@ -1,5 +1,5 @@
+<brand-header back="{{false}}"/>
 <view class="page review-page">
-  <view class="c-brand-header"><view><view class="c-brand-name">SpeakMap</view><view class="c-brand-tagline">更自然地开口说英语</view></view></view>
   <view wx:if="{{!session}}" class="review-overview">
     <view class="title"><text class="marker">学习库复习</text></view>
     <view class="muted">先想起来，再换个场景用出来。</view>

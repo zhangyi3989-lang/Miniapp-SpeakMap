@@ -2,5 +2,6 @@
   "navigationBarTitleText": "反馈",
   "usingComponents": {
     "brand-header": "/components/brand-header/brand-header"
-  }
+  },
+  "navigationStyle": "custom"
 }

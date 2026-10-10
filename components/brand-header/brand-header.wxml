@@ -1,1 +1,10 @@
-<view class="heading-row"><view class="wordmark"><view class="seal">S</view><text class="wordmark-text">SpeakMap</text></view><view class="section">{{section}}</view></view>
+<view class="unified-header" style="padding-top:{{statusBarHeight}}px;">
+  <view class="brand-navigation" style="width:{{menuLeft}}px;">
+    <button wx:if="{{back}}" class="brand-back" bindtap="returnPage" aria-label="返回上一页"><view class="back-chevron"/></button>
+    <view class="brand-copy">
+      <view class="brand-name">SpeakMap</view>
+      <view class="brand-tagline">更自然地开口说英语</view>
+    </view>
+  </view>
+  <button wx:if="{{showSearch}}" class="brand-search" bindtap="search" aria-label="搜索学习库" style="top:{{statusBarHeight + 8}}px;left:{{menuLeft - 42}}px;"><image src="/assets/c-search.png" mode="aspectFit" style="width:38rpx;height:38rpx;"/></button>
+</view>

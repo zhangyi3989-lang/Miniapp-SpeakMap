@@ -3,5 +3,6 @@
   "usingComponents": {
     "brand-header": "/components/brand-header/brand-header",
     "voice-recorder": "/components/voice-recorder/voice-recorder"
-  }
+  },
+  "navigationStyle": "custom"
 }

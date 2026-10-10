@@ -1,4 +1,5 @@
-<view class="page"><brand-header section="训练"/>
+<brand-header back="{{true}}"/>
+<view class="page">
   <view wx:if="{{session}}">
     <view wx:if="{{mother}}" class="english">{{mother.skeleton}}</view>
     <view wx:if="{{demo}}" class="demo">当前为示例模式</view>

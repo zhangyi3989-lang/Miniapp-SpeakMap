@@ -6,5 +6,6 @@
     "voice-recorder": "/components/voice-recorder/voice-recorder"
   },
   "navigationBarBackgroundColor": "#FFF8EF",
-  "navigationBarTextStyle": "black"
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom"
 }

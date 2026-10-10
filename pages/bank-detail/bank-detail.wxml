@@ -1,4 +1,5 @@
-<view class="page"><brand-header section="学习内容"/>
+<brand-header back="{{true}}"/>
+<view class="page">
   <view wx:if="{{item}}">
     <view class="badge">{{item.provenance === 'demo_reference' ? '示例内容 · 不代表对你输入的分析' : '学习内容'}}</view>
     <block wx:if="{{!editing}}">

@@ -2,5 +2,6 @@
   "navigationBarTitleText": "母句详细学习",
   "usingComponents": {
     "brand-header": "/components/brand-header/brand-header"
-  }
+  },
+  "navigationStyle": "custom"
 }
