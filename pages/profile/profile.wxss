@@ -1,1 +1,106 @@
-/* 全局样式来自 app.wxss。 */
+.profile-heading {
+  display: flex;
+  align-items: center;
+  margin: 6rpx 0 10rpx;
+}
+.profile-heading .title {
+  font-size: 38rpx;
+  margin: 0 0 10rpx;
+}
+.summary-card {
+  display: flex;
+  padding: 28rpx 12rpx;
+  border: 0;
+  margin: 12rpx 0;
+}
+.summary-metric {
+  flex: 1;
+  text-align: center;
+  font-size: 23rpx;
+  color: #819397;
+}
+.summary-metric + .summary-metric {
+  border-left: 1rpx solid #e7ede7;
+}
+.metric-number {
+  color: #173f59;
+  font-size: 46rpx;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 6rpx;
+}
+.extra-stats {
+  padding: 4rpx 8rpx;
+}
+.section-title {
+  font-size: 29rpx;
+  margin: 28rpx 0 18rpx;
+}
+.record-timeline {
+  padding-left: 16rpx;
+}
+.record-entry {
+  position: relative;
+  border-left: 2rpx solid #e3e9e0;
+  padding: 0 0 20rpx 28rpx;
+}
+.record-entry:before {
+  content: "";
+  position: absolute;
+  left: -8rpx;
+  top: 8rpx;
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: #75a875;
+}
+.record-entry:nth-child(even):before {
+  background: #f4ac80;
+}
+.record-date {
+  font-size: 23rpx;
+  color: #87999c;
+  margin-bottom: 10rpx;
+}
+.record-card {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin: 0;
+  border: 0;
+  padding: 20rpx 16rpx;
+}
+.record-icon {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 17rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ebf4e4;
+  flex-shrink: 0;
+}
+.record-title {
+  font-size: 25rpx;
+  font-weight: 600;
+}
+.saved-label {
+  background: #eaf4e3;
+  color: #4c8055;
+  border-radius: 20rpx;
+  padding: 3rpx 12rpx;
+  font-size: 20rpx;
+  white-space: nowrap;
+}
+.utility-card {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  border: 0;
+  padding: 24rpx;
+  margin: 22rpx 0;
+}
+.utility-card .subtitle {
+  font-size: 26rpx;
+  margin-bottom: 2rpx;
+}

@@ -8,9 +8,9 @@ Page({
     filter: 0,
     motherOptions: ["全部母句"].concat(mothers.map((m) => m.id)),
     tabs: [
-      { id: "expression", name: "表达 / Chunk" },
+      { id: "expression", name: "Chunk库" },
       { id: "mistake", name: "错误库" },
-      { id: "natural_upgrade", name: "自然升级" },
+      { id: "natural_upgrade", name: "地道升级库" },
     ],
   },
   onShow() {
@@ -21,6 +21,17 @@ Page({
       mid = this.data.filter ? mothers[this.data.filter - 1].id : "";
     const q = this.data.query.trim().toLowerCase();
     this.setData({
+      categories: [
+        { id: "mistake", name: "错误库", icon: "mistake" },
+        { id: "natural_upgrade", name: "地道升级库", icon: "upgrade" },
+        { id: "expression", name: "Chunk库", icon: "chunk" },
+      ].map((c) => Object.assign({}, c, { count: d.banks[c.id].length })),
+      selectedName:
+        this.data.type === "mistake"
+          ? "错误库"
+          : this.data.type === "natural_upgrade"
+            ? "地道升级库"
+            : "Chunk库",
       items: d.banks[this.data.type]
         .filter(
           (b) =>

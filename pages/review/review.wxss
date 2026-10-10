@@ -1,1 +1,64 @@
-/* 全局样式来自 app.wxss。 */
+.review-page .title {
+  margin: 12rpx 0 6rpx;
+  font-size: 40rpx;
+}
+.review-category {
+  margin: 22rpx 0;
+  padding: 24rpx;
+  border: 0;
+}
+.review-category-top {
+  display: flex;
+  gap: 20rpx;
+  align-items: center;
+}
+.review-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 82rpx;
+  height: 82rpx;
+  border-radius: 20rpx;
+  background: #ffe8db;
+  flex-shrink: 0;
+}
+.natural_upgrade .review-icon {
+  background: #e7f2de;
+}
+.expression .review-icon {
+  background: #e1effc;
+}
+.review-category .subtitle {
+  font-size: 29rpx;
+  margin-bottom: 4rpx;
+}
+.review-category-bottom {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-top: 22rpx;
+}
+.due-metric {
+  min-width: 120rpx;
+  font-size: 22rpx;
+}
+.due-metric text {
+  font-size: 38rpx;
+  font-weight: 700;
+}
+.accumulated {
+  border-left: 1rpx solid #e5e9e7;
+  padding-left: 18rpx;
+  flex: 1;
+  font-size: 21rpx;
+}
+.review-start.primary {
+  width: auto;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 15rpx 20rpx;
+  font-size: 23rpx;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: none;
+}

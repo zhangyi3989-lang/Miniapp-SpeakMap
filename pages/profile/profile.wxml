@@ -1,46 +1,11 @@
-<view class="page"><brand-header section="我的"/>
-  <view class="title"><text class="marker">我的学习足迹</text></view>
-  <brand-mascot caption="每次练习，都留下属于你的表达。"/>
-  <view class="card green">
-    <view class="subtitle">每次开口，都留下真实记录</view>
-    <view class="muted">数据只保存在当前设备，不会自动跨设备同步。</view>
-  </view>
-  <view class="stats-grid">
-    <view class="stat">
-      <view class="number">{{stats.days}}</view>
-      <view class="muted">训练天数</view>
-    </view>
-    <view class="stat">
-      <view class="number">{{stats.answers}}</view>
-      <view class="muted">累计回答</view>
-    </view>
-    <view class="stat">
-      <view class="number">{{stats.started}}</view>
-      <view class="muted">已开始母句</view>
-    </view>
-    <view class="stat">
-      <view class="number">{{stats.completed}}</view>
-      <view class="muted">完成首次训练</view>
-    </view>
-    <view class="stat">
-      <view class="number">{{stats.reviews}}</view>
-      <view class="muted">复习次数</view>
-    </view>
-    <view class="stat">
-      <view class="number">{{stats.banks}}</view>
-      <view class="muted">学习库条目</view>
-    </view>
-  </view>
-  <button bindtap="backup">数据备份 / 恢复 / 清空</button>
-  <view class="section-title"><text class="marker">最近训练记录</text></view>
-  <view wx:for="{{records}}" wx:key="sessionId" class="card" data-id="{{item.sessionId}}" bindtap="record">
-    <view class="row">
-      <view>{{item.motherSentenceId || '自由表达 / 学习库复习'}}</view>
-      <view class="muted">{{item.date}}</view>
-    </view>
-    <view class="small muted">
-      {{item.sessionType === 'review' ? '复习' : item.phase === 'phase0' ? 'Phase 0' : item.level}} · {{item.completed ? '已完成' : '进行中'}} · {{item.answers.length}} 条回答 →
-    </view>
-  </view>
-  <view wx:if="{{!records.length}}" class="empty">还没有训练记录。先写下一句自己的话吧。</view>
+<view class="page profile-page">
+  <view class="profile-heading"><view class="grow"><view class="title">我的学习足迹</view><view class="muted small">每一次学习都是靠近更好的你</view></view><image src="/assets/home-reading-cat.png" mode="aspectFit" style="width:146rpx;height:146rpx;flex-shrink:0;"/></view>
+  <view class="card summary-card"><view class="summary-metric"><view class="metric-number">{{stats.days}}</view><view>训练天数</view></view><view class="summary-metric"><view class="metric-number">{{stats.answers}}</view><view>累计回答</view></view><view class="summary-metric"><view class="metric-number">{{stats.completed}}</view><view>完成母句</view></view></view>
+  <view class="row extra-stats" bindtap="toggleDetails"><view class="small muted">{{detailsOpen ? '收起其他统计' : '查看其他统计'}}</view><view class="muted">{{detailsOpen ? '−' : '+'}}</view></view>
+  <view wx:if="{{detailsOpen}}" class="card small muted">已开始母句 {{stats.started}} · 复习 {{stats.reviews}} 次 · 学习库 {{stats.banks}} 条</view>
+  <view class="row"><view class="section-title">最近训练</view><view class="small muted" bindtap="toggleRecords">{{recordsOpen ? '收起' : '查看全部'}} ›</view></view>
+  <view class="record-timeline"><view wx:for="{{recordsOpen ? records : recentRecords}}" wx:key="sessionId" class="record-entry" data-id="{{item.sessionId}}" bindtap="record"><view class="record-date">{{item.date}}</view><view class="card record-card"><view class="record-icon"><image src="/assets/ui-record.png" mode="aspectFit" style="width:34rpx;height:34rpx;"/></view><view class="grow"><view class="record-title">{{item.label}}</view><view class="small muted">{{item.answerCount}} 条回答 · {{item.completed ? '本次练习已完成' : '进度已保存'}}</view></view><view class="saved-label">已保存</view></view></view></view>
+  <view wx:if="{{!records.length}}" class="empty">还没有训练记录，从今天的学习开始吧。</view>
+  <view class="card utility-card" bindtap="backup"><image src="/assets/ui-backup.png" mode="aspectFit" style="width:42rpx;height:42rpx;flex-shrink:0;"/><view class="grow"><view class="subtitle">数据备份与管理</view><view class="small muted">备份、恢复和清空学习数据</view></view><view class="muted">›</view></view>
+  <view class="footnote">学习数据保存在当前设备</view>
 </view>

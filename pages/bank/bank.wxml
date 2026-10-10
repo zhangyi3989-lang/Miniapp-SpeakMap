@@ -1,36 +1,13 @@
-<view class="page"><brand-header section="学习库"/>
-  <view class="eyebrow">KEEP · RECALL · USE</view>
-  <view class="title"><text class="marker">我的表达资产</text></view>
-  <view class="map">
-    <view
-      wx:for="{{tabs}}"
-      wx:key="id"
-      class="bank-tab {{item.id}} {{type === item.id ? 'active' : ''}}"
-      data-id="{{item.id}}"
-      bindtap="tab"
-    >
-      {{item.name}}
-    </view>
+<view class="page catalog-page">
+  <view class="title">学习库</view><view class="muted">把每一次表达变得更地道</view>
+  <input class="library-search" placeholder="搜索表达或中文意思" value="{{query}}" bindinput="search"/>
+  <view class="category-grid"><view wx:for="{{categories}}" wx:key="id" class="category-tile {{item.id}} {{type === item.id ? 'selected' : ''}}" data-id="{{item.id}}" bindtap="tab"><image src="/assets/ui-{{item.icon}}.png" mode="aspectFit" style="width:42rpx;height:42rpx;"/><view>{{item.name}}</view><view class="category-count">{{item.count}}</view></view></view>
+  <view class="row list-heading"><view class="subtitle">{{selectedName}} <text class="small muted">（{{items.length}}条）</text></view><picker range="{{motherOptions}}" value="{{filter}}" bindchange="filter"><view class="small muted">{{motherOptions[filter]}} ▾</view></picker></view>
+  <view wx:for="{{items}}" wx:key="id" class="card expression-card {{type}}" bindtap="open" data-id="{{item.id}}">
+    <view class="expression-line" wx:if="{{item.myExpression}}"><view class="expression-label">{{type === 'mistake' ? '原表达' : '原说法'}}</view><view class="grow">{{item.myExpression}}</view></view>
+    <view class="expression-line"><view class="expression-label">{{type === 'mistake' ? '修改后' : type === 'natural_upgrade' ? '更自然' : '表达'}}</view><view class="grow expression-value">{{item.text}}</view></view>
+    <view class="expression-line"><view class="expression-label">中文意思</view><view class="grow muted">{{item.meaning}}</view></view>
+    <view class="row expression-meta"><view>{{item.provenance === 'demo_reference' ? '示例内容' : '学习内容'}} · {{item.sourceMotherSentenceId || '自由表达'}}</view><view>查看 ›</view></view>
   </view>
-  <view class="muted">
-    {{type === 'expression' ? '值得整体调用的新表达。' : type === 'mistake' ? '真实错误与示例候选会明确区分。' : '原表达可成立时，更自然的说法。'}}
-  </view>
-  <input placeholder="搜索表达文字" value="{{query}}" bindinput="search" />
-  <picker range="{{motherOptions}}" value="{{filter}}" bindchange="filter">
-    <view class="tag">按母句：{{motherOptions[filter]}} ▾</view>
-  </picker>
-  <view wx:for="{{items}}" wx:key="id" class="card" bindtap="open" data-id="{{item.id}}">
-    <view class="row">
-      <view class="badge">
-        {{item.provenance === 'demo_reference' ? '示例内容' : '学习内容'}} · {{item.sourceMotherSentenceId || '自由表达'}}
-      </view>
-      <view class="small muted">R{{item.reviewStage+1}}</view>
-    </view>
-    <view class="english">{{item.text}}</view>
-    <view class="muted">{{item.meaning}}</view>
-    <view class="small muted">下次复习：{{item.date}}</view>
-  </view>
-  <view wx:if="{{!items.length}}" class="empty">
-    <brand-mascot compact="{{true}}"/>{{query || filter ? '没有找到匹配内容。' : '学习库还是空的。完成训练后，勾选你想留下的表达。'}}
-  </view>
+  <view wx:if="{{!items.length}}" class="empty">{{query || filter ? '没有找到匹配内容。' : '这里还没有表达。完成训练后，选择想留下的内容。'}}</view>
 </view>

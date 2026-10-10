@@ -335,3 +335,34 @@ test("C首页默认三条紧凑安排，展开不丢失未来复习或改变进�
   assert.equal(JSON.stringify(storage.load()), before);
   assert.equal(home.data.current.id, "session:" + s.sessionId);
 });
+
+test("C复习分类按钮打开到期条目，三个分类数量来自真实学习库", () => {
+  bank.add(
+    [
+      {
+        bankType: "mistake",
+        provenance: "demo_reference",
+        data: {
+          recommendedExpression: "I agree.",
+          myExpression: "I am agree.",
+          meaningZh: "我同意。",
+        },
+      },
+    ],
+    "fixture",
+    "",
+  );
+  storage.transact((d) => {
+    d.reviews[0].nextReviewAt = "2020-01-01T00:00:00.000Z";
+  });
+  const page = mount("review");
+  assert.equal(page.data.categories.find((x) => x.type === "mistake").due, 1);
+  assert.equal(
+    page.data.categories.find((x) => x.type === "expression").due,
+    0,
+  );
+  page.startBank({ currentTarget: { dataset: { type: "mistake" } } });
+  assert.equal(page.data.session.sessionType, "review");
+  assert.equal(page.data.session.reviewId, storage.load().reviews[0].id);
+  assert.equal(page.data.session.revealed, false);
+});

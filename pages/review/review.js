@@ -101,6 +101,13 @@ Page({
       });
     });
   },
+  startBank(e) {
+    const type = e.currentTarget.dataset.type;
+    this.setData({ selectedType: type });
+    this.refresh();
+    const due = this.data.items && this.data.items.find((r) => r.isDue);
+    if (due) this.open({ currentTarget: { dataset: { id: due.id } } });
+  },
   selectBank(e) {
     this.setData({ selectedType: e.currentTarget.dataset.type });
     this.refresh();
