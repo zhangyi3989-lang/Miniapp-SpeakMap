@@ -77,7 +77,7 @@ test("复现旧目录引用中断注册，修复后 15 个页面按微信文件�
   const fixed = runtime();
   fixed.boot();
   assert.equal(fixed.pages.size, 15);
-  assert.equal(fixed.components.size, 2);
+  assert.equal(fixed.components.size, 3);
   assert.equal(
     fixed.components.get("/components/brand-mascot/brand-mascot").properties
       .compact.type.name,

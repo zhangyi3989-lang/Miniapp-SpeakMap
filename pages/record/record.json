@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "训练记录",
   "usingComponents": {
-    "brand-header": "/components/brand-header/brand-header"
+    "brand-header": "/components/brand-header/brand-header",
+    "voice-recorder": "/components/voice-recorder/voice-recorder"
   }
 }

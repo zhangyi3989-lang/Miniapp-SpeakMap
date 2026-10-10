@@ -1,0 +1,14 @@
+.voice-panel { padding: 26rpx; margin: 24rpx 0; border: 1rpx solid #e1ebdc; border-radius: 28rpx; background: #f2f7ec; color: #163b50; }
+.voice-heading { font-size: 30rpx; font-weight: 600; }
+.voice-description { margin-top: 10rpx; color: #71858a; font-size: 25rpx; }
+.voice-status { margin-top: 10rpx; color: #b35943; font-size: 26rpx; }
+.voice-actions { display: flex; gap: 16rpx; margin-top: 20rpx; }
+.voice-actions button { flex: 1; margin: 0; padding: 16rpx 18rpx; border-radius: 44rpx; font-size: 27rpx; line-height: 1.4; }
+.voice-actions button::after, .voice-permission::after { border: 0; }
+.voice-start { background: #629c6b; color: white; }
+.voice-stop { background: #b86e56; color: white; }
+.voice-play { background: white; color: #44764b; }
+button[disabled] { opacity: .5; }
+.voice-note { font-size: 22rpx; color: #7a8b83; margin-top: 18rpx; line-height: 1.6; }
+.voice-error { color: #aa513c; font-size: 24rpx; margin-top: 14rpx; }
+.voice-permission { background: white; color: #44764b; font-size: 25rpx; margin: 16rpx 0 0; border-radius: 40rpx; }

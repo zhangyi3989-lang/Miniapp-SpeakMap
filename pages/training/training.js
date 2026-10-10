@@ -42,6 +42,7 @@ Page({
       });
     });
   },
+  voiceState(e) { this.setData({ voiceBusy: e.detail.busy }); },
   input(e) {
     this.setData({ input: e.detail.value });
     try {
@@ -69,7 +70,7 @@ Page({
     this.setData({ helperOpen: !this.data.helperOpen });
   },
   async submit() {
-    if (this.data.busy || this.data.feedback) return;
+    if (this.data.voiceBusy || this.data.busy || this.data.feedback) return;
     this.setData({ busy: true, error: "" });
     try {
       await training.submit(
@@ -94,7 +95,7 @@ Page({
     }
   },
   previous() {
-    if (this.data.busy) return;
+    if (this.data.voiceBusy || this.data.busy) return;
     ui.guard(() => {
       training.back(this.sid);
       this.setData({ helperOpen: false });
@@ -102,7 +103,7 @@ Page({
     });
   },
   next() {
-    if (this.data.busy) return;
+    if (this.data.voiceBusy || this.data.busy) return;
     ui.guard(() => {
       const s = training.advance(this.sid);
       this.setData({ helperOpen: false });

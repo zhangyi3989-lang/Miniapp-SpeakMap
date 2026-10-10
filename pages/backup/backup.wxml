@@ -1,5 +1,6 @@
 <view class="page"><brand-header section="数据管理"/>
   <view class="title"><text class="marker">保管好你的学习记录</text></view>
+  <view class="muted small">录音保存在本机，文字备份不包含音频文件，不能迁移到其他设备。</view>
   <view class="card green">
     <view>数据保存在当前设备。卸载或清理小程序可能导致丢失。</view>
     <view class="muted">复制 JSON 后，粘贴到你信任的笔记工具保存。备份包含你的原始回答，请妥善保管。</view>

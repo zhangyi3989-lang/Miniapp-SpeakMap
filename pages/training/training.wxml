@@ -24,7 +24,7 @@
         <view class="badge">{{session.sessionType === 'training' ? session.level + ' / L6' : task.title}}</view>
         <view wx:if="{{task.total}}" class="muted">{{task.progressLabel || (task.batch ? '整组 · ' + task.batchCount + ' 句' : (session.itemIndex+1) + ' / ' + task.total)}}</view>
       </view>
-      <button wx:if="{{canGoBack}}" class="back-step" bindtap="previous" disabled="{{busy}}">← 上一步</button>
+      <button wx:if="{{canGoBack}}" class="back-step" bindtap="previous" disabled="{{busy || voiceBusy}}">← 上一步</button>
       <view class="title"><text class="marker">{{task.title}}</text></view>
       <view wx:if="{{task.map.length}}" class="map">
         <view
@@ -58,7 +58,8 @@
         </view>
       </view>
       <view wx:if="{{task.previousText}}" class="card"><view class="label">话题 1 · 刚才的 30 秒回答</view><view class="text">{{task.previousText}}</view></view>
-      <view class="label">写下你的回答 · {{input.length}} / {{max}}</view>
+      <voice-recorder session-id="{{session.sessionId}}" step-key="{{session.level + '-' + session.itemIndex}}" title="{{task.title}}" disabled="{{busy || !!feedback}}" bindstatechange="voiceState"/>
+      <view class="label">文字回答 · {{input.length}} / {{max}}</view>
       <textarea
         value="{{input}}"
         bindinput="input"
@@ -67,7 +68,7 @@
         placeholder="{{task.placeholder || '用自己的英语表达，不用追求完美。'}}"
       />
       <view wx:if="{{error}}" class="error">{{error}}</view>
-      <button wx:if="{{!feedback}}" class="primary" bindtap="submit" loading="{{busy}}" disabled="{{busy}}">
+      <button wx:if="{{!feedback}}" class="primary" bindtap="submit" loading="{{busy}}" disabled="{{busy || voiceBusy}}">
         {{busy ? '正在保存…' : (error ? '重试提交' : (task.batch ? '一起提交这组回答' : '提交回答'))}}
       </button>
       <view wx:if="{{feedback}}" class="card purple">

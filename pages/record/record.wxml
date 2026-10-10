@@ -14,6 +14,8 @@
       </view>
       <view wx:if="{{item.feedback}}" class="text">{{item.feedback.revisedAnswer}}</view>
     </view>
+    <view wx:if="{{recordings.length}}" class="subtitle">语音练习记录</view>
+    <view wx:for="{{recordings}}" wx:key="step"><view class="badge">{{item.title}} · {{item.at}}</view><voice-recorder clip="{{item}}" read-only="{{true}}"/></view>
     <view wx:if="{{session.sceneAnswer}}" class="card green">
       <view class="label">换场景造句</view>
       <view class="text">{{session.sceneAnswer}}</view>

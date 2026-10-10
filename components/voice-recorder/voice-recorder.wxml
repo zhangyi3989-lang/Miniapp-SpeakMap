@@ -1,0 +1,15 @@
+<view class="voice-panel">
+  <view class="voice-heading">{{readOnly ? '我的录音' : '说出你的回答'}}</view>
+  <view wx:if="{{state === 'recording'}}" class="voice-status">● 正在录音 · {{seconds}} 秒</view>
+  <view wx:elif="{{state === 'saving'}}" class="voice-description">正在保存录音…</view>
+  <view wx:elif="{{saved}}" class="voice-description">已保存 · {{saved.seconds}} 秒</view>
+  <view wx:else class="voice-description">点击开始，说完后点击结束。最长 3 分钟。</view>
+  <view class="voice-actions">
+    <button wx:if="{{state === 'recording'}}" class="voice-stop" bindtap="stop">结束并保存</button>
+    <button wx:elif="{{!readOnly}}" class="voice-start" bindtap="start" disabled="{{disabled || state === 'saving' || state === 'starting' || state === 'authorizing'}}" loading="{{state === 'saving' || state === 'starting' || state === 'authorizing'}}">{{saved ? '重新录制' : '开始录音'}}</button>
+    <button wx:if="{{saved && state !== 'recording' && state !== 'saving' && state !== 'starting' && state !== 'authorizing'}}" class="voice-play" bindtap="play">{{state === 'playing' ? '停止播放' : '播放录音'}}</button>
+  </view>
+  <view wx:if="{{message}}" class="voice-error">{{message}}</view>
+  <button wx:if="{{permissionDenied}}" class="voice-permission" bindtap="permissions">打开麦克风权限</button>
+  <view wx:if="{{!readOnly}}" class="voice-note">录音保存在本机；语音识别尚未接入，当前可通过下方文字回答提交反馈。</view>
+</view>

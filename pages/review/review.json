@@ -2,7 +2,8 @@
   "navigationBarTitleText": "",
   "usingComponents": {
     "brand-header": "/components/brand-header/brand-header",
-    "brand-mascot": "/components/brand-mascot/brand-mascot"
+    "brand-mascot": "/components/brand-mascot/brand-mascot",
+    "voice-recorder": "/components/voice-recorder/voice-recorder"
   },
   "navigationBarBackgroundColor": "#FFF8EF",
   "navigationBarTextStyle": "black"

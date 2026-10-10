@@ -19,6 +19,7 @@
     <view class="badge">R{{stage+1}} / R5 · {{task.name}}</view>
     <view class="title">{{task.prompt}}</view>
     <view wx:if="{{!session.revealed}}" class="muted">先自己想一想，再查看参考。</view>
+    <voice-recorder session-id="{{session.sessionId}}" step-key="review" title="{{task.name}}" disabled="{{session.revealed || busy}}" bindstatechange="voiceState"/>
     <textarea
       value="{{input}}"
       maxlength="{{max}}"
@@ -26,7 +27,7 @@
       disabled="{{session.revealed}}"
       placeholder="写下你想起来的表达。"
     />
-    <button wx:if="{{!session.revealed}}" class="primary" bindtap="reveal">保存回忆，查看参考</button>
+    <button wx:if="{{!session.revealed}}" class="primary" bindtap="reveal" disabled="{{voiceBusy}}">保存回忆，查看参考</button>
     <block wx:if="{{session.revealed}}">
       <view class="card purple">
         <view class="label">参考表达（不是对你输入的判断）</view>

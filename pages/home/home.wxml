@@ -17,6 +17,6 @@
     <view class="entry-card resource-mothers" bindtap="mothers"><image class="resource-icon" mode="aspectFit" style="width:52rpx;height:52rpx;flex-shrink:0;" src="/assets/home-book.png"/><view class="grow"><view class="subtitle">34个母句</view><view class="small muted">打好表达基础</view></view><image class="entry-arrow" mode="aspectFit" style="width:20rpx;height:28rpx;flex-shrink:0;" src="/assets/home-chevron.png"/></view>
     <view class="entry-card resource-functions" bindtap="functions"><image class="resource-icon" mode="aspectFit" style="width:52rpx;height:52rpx;flex-shrink:0;" src="/assets/home-bubble.png"/><view class="grow"><view class="subtitle">12个功能表达</view><view class="small muted">应对真实场景</view></view><image class="entry-arrow" mode="aspectFit" style="width:20rpx;height:28rpx;flex-shrink:0;" src="/assets/home-chevron.png"/></view>
   </view>
-  <view wx:if="{{demo}}" class="demo small">当前为示例模式 · 暂用文字作答，语音尚未接入。反馈用于演示流程。</view>
+  <view wx:if="{{demo}}" class="demo small">当前为示例模式 · 已支持录音回放，语音识别尚未接入。反馈用于演示流程。</view>
   <view class="footnote">学习数据仅保存在当前设备</view>
 </view>

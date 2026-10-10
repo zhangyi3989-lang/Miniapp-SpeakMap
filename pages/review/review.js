@@ -146,6 +146,7 @@ Page({
       this.refresh();
     }
   },
+  voiceState(e) { this.setData({ voiceBusy: e.detail.busy }); },
   input(e) {
     this.setData({ input: e.detail.value });
     try {
@@ -166,6 +167,7 @@ Page({
     }
   },
   reveal() {
+    if (this.data.voiceBusy) return;
     ui.guard(() => {
       training.reveal(this.sid, this.data.input);
       this.refresh();
